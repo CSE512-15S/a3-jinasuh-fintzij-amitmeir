@@ -20,7 +20,8 @@
     <script src="libraries/bootstrap/js/bootstrap.min.js"></script>
     <script src="libraries/colorbrewer/colorbrewer.js"></script>
     <script src="libraries/d3/d3.v3.min.js" charset="utf-8"></script>
-    <script src="libraries/topojson/topojson.v1.min.js"></script>
+    <script src="libraries/d3/topojson.v1.min.js" charset="utf-8"></script>
+    <script src="libraries/d3/queue.v1.min.js" charset="utf-8"></script>
     <script src="libraries/datamaps/datamaps.world.js"></script>
     <script src="libraries/knockoutjs/knockout-3.3.0.js"></script>
 
@@ -59,31 +60,11 @@
                     <div id="dateValue">0</div>
                     <div id="dateSlider"></div>
                 </div>
-                <div class="row">
-                    Infectivity Parameter
-                    <div id="infValue">0.01</div>
-                    <div id="infSlider"></div>
-                </div>
-                <div class="row">
-                    Sample Probability
-                    <div id="spValue">0.1</div>
-                    <div id="spSlider"></div>
-                </div>
-                <div class="row">
-                    District Neighbor Weight
-                    <div id="ndValue">0</div>
-                    <div id="ndSlider"></div>
-                </div>
-                <div class="row">
-                    Country Neighbor Weight
-                    <div id="ncValue">0</div>
-                    <div id="ncSlider"></div>
-                </div>
             </div>
             <div class="col-sm-9 main">
                 <h1 class="page-header">Force of Infection</h1>
                 <div id="map" style="height:800px; width:800px">
-                    <img src="data/background.png" />
+                    <!--<img src="data/background.png" />-->
                 </div>
             </div>
         </div>

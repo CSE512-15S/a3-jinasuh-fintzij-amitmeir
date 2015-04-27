@@ -4,31 +4,12 @@
     return viz;
 }();
 
-
 viz.ebolaMap = function (containerId) {
 
     var currentMap = {},
-	 	data = [],
-        bubbleData = [],
-        selectedParams = {
-            WeekID: 0,
-            Inf: 0.01, // 0.01, 0.06
-            SProb: 0.6, // 0.1, 0.6
-            ND: 0, // 0, 0.1, 0.2
-            NC: 0, // 0, 0.025, 0.05
-            Type: 0, // confirmed=0 or probable=1
-        };
+	 	data = {},
+        dispatch = d3.dispatch("clickdata", "mouseoverdata", "mouseoutdata", "dragthreshold", "dragaxis");
 
-    // chart 
-    var countExtent,
-        foiExtent,
-        weekIDExtent,
-        quantizeFill,
-        linearRadius;
-
-    dispatch = d3.dispatch("clickdata", "mouseoverdata", "mouseoutdata", "dragthreshold", "dragaxis");
-
-    var colorScheme = colorbrewer.Reds[9];
     var datamap = new Datamap(
         {
             scope: 'LIB-level_1',
@@ -83,28 +64,32 @@ viz.ebolaMap = function (containerId) {
                 highlightFillOpacity: 0.85,
                 //exitDelay: 100
                 radiusFunc: function (datum) {
-                    var type = (selectedParams.Type == 0) ? "confirmed" : "probable";
-                    var prop = "inf" + selectedParams.Inf + "sprob" + selectedParams.SProb + "nd" + selectedParams.ND + "nc" + selectedParams.NC + type;
-                    var val = datum[prop];
+                    var type = (data.selectedParams.type == 0) ? "Confirmed" : "Probable";
+                    var val = datum[type];
 
-                    return linearRadius(val);
+                    return data.countRadiusScale(val);
                 },
             },
             fillFunc: function (datum) {
                 var key;
-                if (selectedParams.Type == 0) {
-                    key = quantizeFill(datum.Confirmed);
+                if (data.selectedParams.type == 0) {
+                    key = data.foiFillScale(datum.ConfirmedFOI);
                 }
                 else {
-                    key = quantizeFill(datum.Probable);
+                    key = data.foiFillScale(datum.ProbableFOI);
                 }
 
-                return colorScheme[key];
+                return data.colorScheme[key];
             },
             data: {
             }  //empty data has to be included here cause of some issue MarkDiMarkoh  mentioned in our GitHub conversation
 
         });
+
+
+    /*
+    ** PUBLIC
+    */
 
     currentMap.data = function (_) {
         if (!arguments.length) return data;
@@ -112,89 +97,7 @@ viz.ebolaMap = function (containerId) {
         return currentMap;
     };
 
-    currentMap.bubbleData = function (_) {
-        if (!arguments.length) return bubbleData;
-        bubbleData = _;
-        return currentMap;
-    };
-
-    currentMap.selectedParams = function (_) {
-        if (!arguments.length) return selectedParams;
-        selectedParams = _;
-        return currentMap;
-    };
-
     currentMap.dispatch = dispatch;
-
-    currentMap.initialize = function () {
-        d3.csv("data/ebolawithfoi.csv", function (error, data) {
-
-            // Figure out the range of values to set the choropleth color range
-
-            //Country,District,Case_Type,Week,DistrictID,WeekID,Probable,Confirmed,inf0.01sprob0.1nd0nc0confirmed
-
-            weekIDExtent = d3.extent(data, function (row) { return +row.WeekID; });
-            currentMap.weekIDExtent = weekIDExtent;
-
-            countExtent = [0, 225]; //d3.extent(data, function (row) { return +row.ConfirmedCount; });// 225
-            quantizeFill = d3.scale.quantize()
-               .domain(countExtent)
-               .range(d3.range(9).map(function (i) { return i; }));
-            //.range(d3.range(9).map(function (i) { return "q" + i + "-9"; }));
-
-            foiExtent = [0, 360]; //d3.extent(data, function (row) { return +row.FOI__1; }); // 360
-            linearRadius = d3.scale.linear()
-               .domain(foiExtent)
-               .range([0, 500]); // TODO: Figure out the best range
-
-            // Extract dates and set the dates on the slider
-            var nestedData = d3.nest()
-                .key(function (row) {
-                    return row.WeekID;
-                })
-                .entries(data)
-                .map(function (d) {
-                    var group = d.key
-                    var values = d.values.map(function (dd) {
-                        return {
-                            "district": dd.DistrictID, "data": dd
-                        };
-                    })
-                    return {
-                        'group': group, 'values': values
-                    }
-                });
-
-            var finalData = {};
-            var finalBubbleData = {};
-            nestedData.forEach(function (d) {
-                var newVals = {};
-                var bubbleArray = [];
-
-                d.values.forEach(function (v) {
-                    newVals[v.district] = v.data;
-
-                    // JINA HACK
-                    if (v.data.Country == "Liberia") {
-                        v.data.centered = v.district;
-                        bubbleArray.push(v.data);
-                    }
-                });
-
-                finalData[d.group] = newVals;
-                finalBubbleData[d.group] = bubbleArray;
-            });
-
-            currentMap.data(finalData);
-            currentMap.bubbleData(finalBubbleData);
-
-            currentMap.update();
-
-            if (currentMap.initialized) {
-                currentMap.initialized();
-            }
-        });
-    }
 
     currentMap.update = function () {
         currentMap.updateChropleth();
@@ -204,18 +107,27 @@ viz.ebolaMap = function (containerId) {
     };
 
     currentMap.updateChropleth = function () {
-        var newData = data[selectedParams.WeekID];
-        if (newData) {
-            datamap.updateChoropleth(newData);
+        if (data) {
+            var newData = data.weeklyMapData[data.selectedParams.weekID];
+            if (newData) {
+                datamap.updateChoropleth(newData);
+            }
         }
 
         return currentMap;
     };
 
     currentMap.updateBubbles = function () {
-        var newData = bubbleData[selectedParams.WeekID];
-        if (newData) {
-            datamap.bubbles(newData);
+        if (data) {
+            if (data.selectedParams.showCount) {
+                var newData = data.weeklyBubbleData[data.selectedParams.weekID];
+                if (newData) {
+                    datamap.bubbles(newData);
+                }
+            }
+            else {
+                datamap.bubbles([]);
+            }
         }
 
         return currentMap;
@@ -225,60 +137,3 @@ viz.ebolaMap = function (containerId) {
     // return the object
     return currentMap;
 };
-
-
-
-////  –––––––––––––––––––––––––––––––––––––––––––––––––––
-////  Max – Plugin added by me to have the legend vertically
-//function addLegendmaxstyle(layer, data, options) {
-//    data = data || {};
-//    if (!this.options.fills) { return; }
-
-//    var html = '<dl>';
-//    var label = '';
-
-//    if (data.legendTitle) { html = '<h4>' + data.legendTitle + '</h4>' + html; }
-
-//    for (var fillKey in this.options.fills) {
-
-//        if (fillKey === 'defaultFill') {
-//            if (!data.defaultFillName) {
-//                continue;
-//            }
-
-//            label = data.defaultFillName;
-//        } else {
-//            if (data.labels && data.labels[fillKey]) {
-//                label = data.labels[fillKey];
-//            } else {
-
-//                // Changed by Max //
-//                label = '' + fillKey;
-//                html += '<dd style="background-color:' + this.options.fills[fillKey] + '">&nbsp;</dd>';
-//                html += '<dt>' + label + '</dt>' + '<br>';
-
-//            }
-//        }
-//    }
-//    html += '</dl>';
-
-//    var hoverover = d3.select(this.options.element).append('div')
-//            .attr('class', 'datamaps-legend')
-//            .html(html);
-//}
-////  –––––––––––––––––––––––––––––––––––––––––––––––––––
-
-
-
-
-
-
-
-
-
-////Legende anzeigen
-//myMap1.addPlugin("mylegend", addLegendmaxstyle);
-//myMap1.mylegend({ legendTitle: "Infant Mortality (per 1,000 live births)" })
-//// –––––––––––––––––––––––––––––––––––––––––––––––––––
-
-

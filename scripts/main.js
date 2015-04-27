@@ -1,5 +1,22 @@
 ﻿var mapViz = viz.ebolaMap("map");
 
+var sharedData = {
+    colorScheme: colorbrewer.Reds[9],
+    weeklyMapData: {},
+    weeklyBubbleData: {},
+    selectedDistricts: [],
+    selectedData: {},
+    weekIDExtent: [0, 0],
+    countRadiusScale: function (datum) { return 0; },
+    foiFillScale: function (datum) { return 0; },
+    selectedParams: {
+        weekID: 0,
+        type: 0, // confirmed=0 or probable=1
+        showCount: false,
+    }
+};
+
+
 // Wire up events
 $(document).ready(function onReady() {
     //loading data	
@@ -7,20 +24,93 @@ $(document).ready(function onReady() {
 });
 
 function loadData() {
-    // Load the infection data
+    queue()
+   .defer(d3.csv, "data/eboladata.csv")
+   .await(function (error, data) {
+       initializeData(error, data);
+       initializeMap();
+       initializeControls();
+   });
 
-    mapViz.initialized = function () {
+    function initializeData(error, data) {
+
+        // Data format
+        //Country,DistrictID,Case_Type,Week,Probable,Confirmed,ConfirmedFOI,ProbableFOI,WeekID
+
+        // Extent for Weeks
+        sharedData.weekIDExtent = d3.extent(data, function (row) { return +row.WeekID; });
+
+        // Extent and Scale for New case counts
+        var countExtent = [0, 225];
+        sharedData.countRadiusScale = d3.scale.linear()
+          .domain(countExtent)
+          .range([0, 100]);
+
+        // Extend and Scale for FOI
+        var foiExtent = [0, 7];
+        sharedData.foiFillScale = d3.scale.quantize()
+           .domain(foiExtent)
+           .range(d3.range(9).map(function (i) { return i; }));
+
+        // Group data by WeekID and DistrictID
+        var nestedData = d3.nest()
+            .key(function (row) {
+                return row.WeekID;
+            })
+            .entries(data)
+            .map(function (d) {
+                var group = d.key
+                var values = d.values.map(function (dd) {
+                    return {
+                        "district": dd.DistrictID, "data": dd
+                    };
+                })
+                return {
+                    'group': group, 'values': values
+                }
+            });
+
+        // DataMap Choropleth requires each geometry name (DistrictID) to be a property into the data
+        // DataMap Bubble requires a data array
+        nestedData.forEach(function (d) {
+            var newVals = {};
+            var bubbleArray = [];
+
+            d.values.forEach(function (v) {
+                newVals[v.district] = v.data;
+
+                // JINA HACK -- Only Liberia geo is available for now
+                if (v.data.Country == "Liberia") {
+                    v.data.centered = v.district;
+                    bubbleArray.push(v.data);
+                }
+            });
+
+            sharedData.weeklyMapData[d.group] = newVals;
+            sharedData.weeklyBubbleData[d.group] = bubbleArray;
+        });
+    }
+
+    function initializeMap() {
+        // Set the data on the map
+        mapViz.data(sharedData);
+
+        // Update the map with the data
+        mapViz.update();
+    }
+
+    function initializeControls() {
 
         // Date slider
         var dateSlider = $("#dateSlider");
         var datePlayButton = $("#datePlayButton");
 
         dateSlider.slider({
-            min: mapViz.weekIDExtent[0],
-            max: mapViz.weekIDExtent[1],
+            min: sharedData.weekIDExtent[0],
+            max: sharedData.weekIDExtent[1],
             step: 1,
-            slide: function (event, ui) { updateSlider(ui.value, "#dateValue", "WeekID", true); },
-            change: function (event, ui) { updateSlider(ui.value, "#dateValue", "WeekID", true); },
+            slide: function (event, ui) { updateSlider(ui.value, "#dateValue", "weekID"); },
+            change: function (event, ui) { updateSlider(ui.value, "#dateValue", "weekID"); },
         });
 
         datePlayButton.click(function () {
@@ -32,58 +122,11 @@ function loadData() {
         $('#selector button').click(function () {
             $(this).addClass('active').siblings().removeClass('active');
             var newType = ($(this)[0].id == "confirmed") ? 0 : 1;
-            if (newType != mapViz.selectedParams().Type) {
-                mapViz.selectedParams().Type = newType;
+            if (newType != sharedData.selectedParams.Type) {
+                sharedData.selectedParams.Type = newType;
                 mapViz.updateChropleth();
             }
         });
-
-        // Infectivity
-        var infSlider = $("#infSlider");
-
-        infSlider.slider({
-            min: 0.01,
-            max: 0.06,
-            step: 0.05,
-            slide: function (event, ui) { updateSlider(ui.value, "#infValue", "Inf", false); },
-            change: function (event, ui) { updateSlider(ui.value, "#infValue", "Inf", false); },
-        });
-
-        // Sample Probability
-        var spSlider = $("#spSlider");
-
-        spSlider.slider({
-            min: 0.1,
-            max: 0.6,
-            step: 0.5,
-            slide: function (event, ui) { updateSlider(ui.value, "#spValue", "SProb", false); },
-            change: function (event, ui) { updateSlider(ui.value, "#spValue", "SProb", false); },
-        });
-
-        // District Neighbors
-        var ndSlider = $("#ndSlider");
-
-        ndSlider.slider({
-            min: 0,
-            max: 0.2,
-            step: 0.1,
-            slide: function (event, ui) { updateSlider(ui.value, "#ndValue", "ND", false); },
-            change: function (event, ui) { updateSlider(ui.value, "#ndValue", "ND", false); },
-        });
-
-        // Country Neighbors
-        var ncSlider = $("#ncSlider");
-
-        ncSlider.slider({
-            min: 0,
-            max: 0.05,
-            step: 0.025,
-            slide: function (event, ui) { updateSlider(ui.value, "#ncValue", "NC", false); },
-            change: function (event, ui) { updateSlider(ui.value, "#ncValue", "NC", false); },
-        });
-
-        // Initialize controls
-        //dateSlider.slider("value", mapViz.weekIDExtent[0]);
 
         function incrementDateSlider() {
             var dateSlider = $("#dateSlider");
@@ -98,21 +141,15 @@ function loadData() {
             }
         }
 
-        function updateSlider(v, valueId, property, isDate) {
+        function updateSlider(v, valueId, property) {
             var myValue = $(valueId);
-            if (v != mapViz.selectedParams()[property]) {
+            if (v != sharedData.selectedParams[property]) {
                 myValue.html(v);
-                mapViz.selectedParams()[property] = v;
-                if (isDate) {
-                    mapViz.update();
-                }
-                else {
-                    mapViz.updateBubbles();
-                }
+                sharedData.selectedParams[property] = v;
+                mapViz.update();
             }
             return v;
         }
     }
 
-    mapViz.initialize();
 }

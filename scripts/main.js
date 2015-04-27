@@ -2,26 +2,11 @@
 
 // Wire up events
 $(document).ready(function onReady() {
-
-
-    //initialize the views
-    //mapViz.data([])
-    //	.layout()
-    //	.repaint();
-
     //loading data	
     loadData();
 });
 
 function loadData() {
-    //var positions = {};
-    //// Load the position data
-    //d3.csv("data/locations.csv", function (error, data) {
-    //    data.forEach(function (row) {
-    //        positions[row.DistrictID] = [row.lat, row.long];
-    //    })
-    //});
-
     // Load the infection data
 
     mapViz.initialized = function () {
@@ -127,32 +112,6 @@ function loadData() {
             }
             return v;
         }
-
-        //function updateSlider(sliderId, valueId, property, isDate) {
-        //    var mySlider = $(sliderId);
-        //    var myValue = $(valueId);
-        //    var v = mySlider.slider("value");
-        //    if (v != mapViz.selectedParams()[property]) {
-        //        myValue.html(v);
-        //        mapViz.selectedParams()[property] = v;
-        //        if (isDate) {
-        //            mapViz.updateChropleth();
-        //        }
-        //        else {
-        //            mapViz.updateBubbles();
-        //        }
-        //    }
-        //    return v;
-        //}
-
-        //function updateDate() {
-        //    // When date slider value changes, update the selected date on the map
-        //    var v = updateSlider("#dateSlider", "#dateValue");
-        //    if (v != mapViz.selectedParams().WeekID) {
-        //        mapViz.selectedParams().WeekID = v;
-        //        mapViz.update();
-        //    }
-        //}
     }
 
     mapViz.initialize();

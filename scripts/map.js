@@ -1,10 +1,4 @@
-﻿viz = function () {
-    var viz = {};
-
-    return viz;
-}();
-
-viz.ebolaMap = function (containerId) {
+﻿viz.ebolaMap = function (containerId) {
 
     var currentMap = {},
 	 	data = {},
@@ -64,20 +58,14 @@ viz.ebolaMap = function (containerId) {
                 highlightFillOpacity: 0.85,
                 //exitDelay: 100
                 radiusFunc: function (datum) {
-                    var type = (data.selectedParams.type == 0) ? "Confirmed" : "Probable";
-                    var val = datum[type];
+                    var val = data.getCount(datum);
 
                     return data.countRadiusScale(val);
                 },
             },
             fillFunc: function (datum) {
-                var key;
-                if (data.selectedParams.type == 0) {
-                    key = data.foiFillScale(datum.ConfirmedFOI);
-                }
-                else {
-                    key = data.foiFillScale(datum.ProbableFOI);
-                }
+                var foi = data.getFOI(datum);
+                var key = data.foiFillScale(foi);
 
                 return data.colorScheme[key];
             },

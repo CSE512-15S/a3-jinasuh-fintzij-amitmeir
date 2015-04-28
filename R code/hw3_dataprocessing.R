@@ -1,6 +1,7 @@
 # Generate dataset --------------------------------------------------------
 library(reshape2)
 library(doParallel)
+require(snowfall)
 
 # reshape data to long format
 eboladat <- read.csv("eboladata_raw.csv", header = TRUE, stringsAsFactors = FALSE)
@@ -107,3 +108,6 @@ for(district in unique(final_data$District)) {
 }
 
 final_data <- cbind(final_data,probable_cumulative=probableCumSum,confirmed_cumulative=confirmedCumSum)
+
+#Adding counts normalized by district population
+#First, correct district names in popdat file

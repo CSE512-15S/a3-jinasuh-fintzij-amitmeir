@@ -27,7 +27,8 @@
             highlightOnHover: true,
             highlightFillColor: '#FC8D59',
             highlightBorderColor: 'rgba(250, 15, 160, 0.2)',
-            highlightBorderWidth: 2
+            highlightBorderWidth: 2,
+            onClick: null,
         },
         projectionConfig: {
             rotation: [97, 0]
@@ -179,14 +180,11 @@
           .attr('d', this.path)
           .attr('class', function (d) {
               // JINA's UPDATE
-              d.properties.ID = d.properties.ID.toUpperCase();
-              return 'datamaps-subunit ' + d.properties.ID;
-              //return 'datamaps-subunit ' + d.id;
+              d.id = d.properties.ID.toUpperCase();
+              return 'datamaps-subunit ' + d.id;
           })
           .attr('data-info', function (d) {
-              // JINA's UPDATE
-              return JSON.stringify(colorCodeData[d.properties.ID]);
-              //return JSON.stringify(colorCodeData[d.id]);
+              return JSON.stringify(colorCodeData[d.id]);
           })
           .style('fill', function (d) {
               //if fillKey - use that
@@ -234,9 +232,16 @@
                       $this
                         .style('fill', val(datum.highlightFillColor, options.highlightFillColor, datum))
                         .style('stroke', val(datum.highlightBorderColor, options.highlightBorderColor, datum))
-                        .style('stroke-width', val(datum.highlightBorderWidth, options.highlightBorderWidth, datum))
-                        .style('fill-opacity', val(datum.highlightFillOpacity, options.highlightFillOpacity, datum))
-                        .attr('data-previousAttributes', JSON.stringify(previousAttributes));
+                        .style('stroke-width', function () {
+                            if (datum.selected) {
+                                return previousAttributes['stroke-width'];
+                            }
+                            else {
+                                return val(datum.highlightBorderWidth, options.highlightBorderWidth, datum);
+                            }
+                        })
+                            .style('fill-opacity', val(datum.highlightFillOpacity, options.highlightFillOpacity, datum))
+                            .attr('data-previousAttributes', JSON.stringify(previousAttributes));
 
                       //as per discussion on https://github.com/markmarkoh/datamaps/issues/19
                       if (! /((MSIE)|(Trident))/.test) {
@@ -260,7 +265,30 @@
                   }
                   $this.on('mousemove', null);
                   d3.selectAll('.datamaps-hoverover').style('display', 'none');
-              });
+              })
+            .on('click', function (d) {
+                if (options.onClick) {
+                    var $this = d3.select(this);
+                    var datum = self.options.data[d.id] || {};
+
+                    // Update selected flag and stroke width
+                    datum.selected = !datum.selected;
+                    if (datum.selected) {
+                        $this.style('stroke-width', 3);
+                    }
+                    else {
+                        $this.style('stroke-width', options.borderWidth);
+                    }
+
+                    // Save current attributes
+                    var previousAttributes = JSON.parse($this.attr('data-previousAttributes'));
+                    previousAttributes['stroke-width'] = $this.style('stroke-width');
+                    $this.attr('data-previousAttributes', JSON.stringify(previousAttributes));
+
+                    options.onClick(d, datum);
+                }
+            })
+            ;
         }
 
         function moveToFront() {
@@ -623,6 +651,7 @@
         if (options.geographyConfig.dataUrl) {
             d3.json(options.geographyConfig.dataUrl, function (error, results) {
                 if (error) throw new Error(error);
+
                 self.customTopo = results;
                 draw(results);
             });

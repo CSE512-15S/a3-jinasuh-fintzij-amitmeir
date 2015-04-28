@@ -25,6 +25,9 @@
 
                     return popup;
                 },
+                onClick: function (geography, datum) {
+                    console.log(datum.DistrictID + "clicked");
+                }
             },
 
             element: document.getElementById(containerId),

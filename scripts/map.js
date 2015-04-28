@@ -26,6 +26,13 @@
                     return popup;
                 },
                 onClick: function (geography, datum) {
+                    if (datum.selected) {
+                        data.selectedDistricts.push(datum.DistrictID);
+                    }
+                    else {
+                        data.selectedDistricts.remove(datum.DistrictID);
+                    }
+
                     console.log(datum.DistrictID + "clicked");
                 }
             },

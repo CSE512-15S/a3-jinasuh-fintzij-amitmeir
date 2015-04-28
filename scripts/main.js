@@ -6,7 +6,7 @@ var sharedData = {
     weeklyMapData: {},
     weeklyBubbleData: {},
     districtData: {},
-    selectedDistricts: ["MARGIBI", "BONG"],
+    selectedDistricts: ko.observableArray(),
     selectedData: {},
     weekIDExtent: [0, 0],
     dateExtent: [0, 0],

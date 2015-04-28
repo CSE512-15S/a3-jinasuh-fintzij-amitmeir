@@ -39,8 +39,11 @@ var sharedData = {
 
 // Wire up events
 $(document).ready(function onReady() {
-    //loading data	
     loadData();
+
+    sharedData.selectedDistricts.subscribe(function () {
+        lineViz.update();
+    })
 });
 
 function loadData() {

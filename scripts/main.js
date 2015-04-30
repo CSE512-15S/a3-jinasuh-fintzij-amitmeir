@@ -10,6 +10,7 @@ var sharedData = {
     selectedData: {},
     weekIDExtent: [0, 0],
     dateExtent: [0, 0],
+    dateIndices: [],
     countRadiusScale: function (datum) { return 0; },
     foiFillScale: function (datum) { return 0; },
     selectedParams: {
@@ -65,11 +66,17 @@ function loadData() {
         var parseDate = d3.time.format("%x").parse;
 
         // Extent for Weeks
+        var weeks = {};
         sharedData.weekIDExtent = d3.extent(data, function (row) { return +row.WeekID; });
         sharedData.dateExtent = d3.extent(data, function (row) {
             row.date = parseDate(row.Week);
+            weeks[+row.WeekID] = row.date;
             return row.date;
         });
+
+        for (var i = sharedData.weekIDExtent[0]; i <= sharedData.weekIDExtent[1]; i++) {
+            sharedData.dateIndices.push(weeks[i]);
+        }
 
         // Extent and Scale for New case counts
         var countExtent = [0, 225];

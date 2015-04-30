@@ -23,6 +23,9 @@
     var height = $(containerId).height() - margin.top - margin.bottom;
 
     var parseDate = d3.time.format("%x").parse;
+    var bisectDate = d3.bisector(function (d) {
+        return d;
+    }).left;
 
     var x = d3.time.scale()
         .range([0, width]);
@@ -56,7 +59,7 @@
         .orient("left");
 
     var line = d3.svg.line()
-        .interpolate("basis") // TODO JINA: Do we want to interpolate??
+        //.interpolate("basis") // TODO JINA: Do we want to interpolate??
         .x(function (d) {
             return x(d.date);
         })
@@ -80,12 +83,47 @@
     var ytext = ysvg
           .append("text");
 
+    var focus = svg.append("g")
+      .attr("class", "focus")
+      .style("display", "none");
+
+    focus.append("circle")
+        .attr("r", 4.5);
+
+    focus.append("text")
+        .attr("x", 9)
+        .attr("dy", ".35em");
+
+    var overlay = svg.append("rect")
+      .attr("class", "overlay")
+      .attr("width", width)
+      .attr("height", height)
+      .on("mouseover", function () { focus.style("display", null); })
+      .on("mouseout", function () { focus.style("display", "none"); })
+      .on("mousemove", mousemove);
+
+    var districts = [];
+
+    function mousemove() {
+        if (districts && districts.length > 0) {
+            var x0 = x.invert(d3.mouse(this)[0]);
+            i = bisectDate(data.dateIndices, x0, 1),
+            d0 = data.dateIndices[i - 1],
+            d1 = data.dateIndices[i],
+            di = x0 - d0.date > d1.date - x0 ? i : i-1;
+
+            var districtData = districts[0].values[di];
+            focus.attr("transform", "translate(" + x(districtData.date) + "," + y(districtData.count) + ")");
+            focus.select("text").text(districtData.count);
+        }
+    }
+
     chart.update = function () {
         if (!data) {
             return;
         }
 
-        var districts = data.selectedDistricts().map(function (name) {
+        districts = data.selectedDistricts().map(function (name) {
             console.log("selected: " + name);
             return {
                 name: name,

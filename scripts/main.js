@@ -175,9 +175,10 @@ function loadData() {
         $('#selector button').click(function () {
             $(this).addClass('active').siblings().removeClass('active');
             var newType = ($(this)[0].id == "confirmed") ? 0 : 1;
-            if (newType != sharedData.selectedParams.Type) {
-                sharedData.selectedParams.Type = newType;
+            if (newType != sharedData.selectedParams.type) {
+                sharedData.selectedParams.type = newType;
                 mapViz.updateChropleth();
+                lineViz.update();
             }
         });
 

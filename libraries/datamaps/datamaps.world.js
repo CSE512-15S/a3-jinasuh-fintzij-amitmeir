@@ -166,7 +166,7 @@
             subunits = this.addLayer('datamaps-subunits', null, true);
         }
 
-        var geoData = topojson.feature(data, data.objects[this.options.scope]).features;
+        var geoData = data.features; // topojson.feature(data, data.objects[this.options.scope]).features;
         if (geoConfig.hideAntarctica) {
             geoData = geoData.filter(function (feature) {
                 return feature.id !== "ATA";

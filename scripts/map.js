@@ -8,7 +8,7 @@
         {
             scope: 'LIB-level_1',
             geographyConfig: {
-                dataUrl: 'data/liberia.json',
+                dataUrl: 'data/merged.json',
                 borderWidth: 0.3,
                 borderColor: function (data) {
                     return '#4F4F4F';
@@ -18,7 +18,7 @@
                 highlightFillColor: '#FFEC38',
 
                 popupTemplate: function (geography, data) {
-                    var popup = '<div class="hoverinfo"> <strong> District: ' + geography.properties.ID + ' </strong> Country: ' + geography.properties.CAPTION;
+                    var popup = '<div class="hoverinfo"> <strong> District: ' + geography.properties.ID + ' </strong> Country: ' + geography.properties.COUNTRY;
                     if (data) {
                         popup = popup + '+++' + data.ConfirmedCount + '</div>';
                     }
@@ -40,8 +40,8 @@
             element: document.getElementById(containerId),
             setProjection: function (element) {
                 var projection = d3.geo.equirectangular()
-                  .center([-9.8124935, 6.2308452]) // -10.8451467	6.7562926
-                  .scale(6000)
+                  .center([-10.8124935, 8.2308452]) // -10.8451467	6.7562926
+                  .scale(4000)
                   .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
                 var path = d3.geo.path()
                   .projection(projection);

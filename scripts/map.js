@@ -34,6 +34,14 @@
                     }
 
                     console.log(datum.DistrictID + "clicked");
+                },
+                onHover: function (geography, datum) {
+                    if (datum) {
+                        data.hoveredDistrict(datum.DistrictID);
+                    }
+                    else {
+                        data.hoveredDistrict(null);
+                    }
                 }
             },
 

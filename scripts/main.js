@@ -35,6 +35,7 @@ var sharedData = {
             return datum.ProbableFOI;
         }
     },
+    hoveredDistrict: ko.observable(),
 };
 
 
@@ -44,6 +45,10 @@ $(document).ready(function onReady() {
 
     sharedData.selectedDistricts.subscribe(function () {
         lineViz.update();
+    });
+
+    sharedData.hoveredDistrict.subscribe(function () {
+        lineViz.updateHoveredDistrict();
     })
 });
 
@@ -201,6 +206,7 @@ function loadData() {
                 myValue.html(v);
                 sharedData.selectedParams[property] = v;
                 mapViz.update();
+                lineViz.updateSelectedWeek();
             }
             return v;
         }

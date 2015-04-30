@@ -103,12 +103,16 @@ body {
     stroke-width: 1.5px;
 }
 
+    .line.hovered {
+        stroke-width: 3px;
+    }
+
 .overlay {
     fill: none;
     pointer-events: all;
 }
 
-.focus circle {
-    fill: none;
-    stroke: steelblue;
+.focus {
+    /*fill: none;
+    stroke: steelblue;*/
 }

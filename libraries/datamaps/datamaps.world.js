@@ -252,8 +252,12 @@
                   if (options.popupOnHover) {
                       self.updatePopup($this, d, options, svg);
                   }
+
+                  if (options.onHover) {
+                      options.onHover(d, datum);
+                  }
               })
-              .on('mouseout', function () {
+              .on('mouseout', function (d) {
                   var $this = d3.select(this);
 
                   if (options.highlightOnHover) {
@@ -265,6 +269,10 @@
                   }
                   $this.on('mousemove', null);
                   d3.selectAll('.datamaps-hoverover').style('display', 'none');
+
+                  if (options.onHover) {
+                      options.onHover(d, null);
+                  }
               })
             .on('click', function (d) {
                 if (options.onClick) {

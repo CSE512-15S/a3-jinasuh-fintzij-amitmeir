@@ -83,23 +83,12 @@
     var ytext = ysvg
           .append("text");
 
-    var focus = svg.append("g")
-      .attr("class", "focus")
-      .style("display", "none");
-
-    focus.append("circle")
-        .attr("r", 4.5);
-
-    focus.append("text")
-        .attr("x", 9)
-        .attr("dy", ".35em");
-
     var overlay = svg.append("rect")
       .attr("class", "overlay")
       .attr("width", width)
       .attr("height", height)
-      .on("mouseover", function () { focus.style("display", null); })
-      .on("mouseout", function () { focus.style("display", "none"); })
+      .on("mouseover", function () { svg.selectAll(".focus").style("display", null); })
+      .on("mouseout", function () { svg.selectAll(".focus").style("display", "none"); })
       .on("mousemove", mousemove);
 
     var districts = [];
@@ -110,11 +99,11 @@
             i = bisectDate(data.dateIndices, x0, 1),
             d0 = data.dateIndices[i - 1],
             d1 = data.dateIndices[i],
-            di = x0 - d0.date > d1.date - x0 ? i : i-1;
+            di = x0 - d0.date > d1.date - x0 ? i : i - 1;
 
-            var districtData = districts[0].values[di];
-            focus.attr("transform", "translate(" + x(districtData.date) + "," + y(districtData.count) + ")");
-            focus.select("text").text(districtData.count);
+            svg.selectAll(".focus")
+                .data(districts, function (d) { return d.name; })
+            .attr("transform", function (d) { return "translate(" + x(d.values[di].date) + "," + y(d.values[di].count) + ")"; });
         }
     }
 
@@ -166,27 +155,45 @@
         // DATA JOIN
         // Join new data with old elements, if any.
         var district = svg.selectAll(".district")
-            .data(districts, function (d) { return d.name; });
+            .data(districts, function (d) {
+                return d.name;
+            });
 
         // UPDATE
         // Update old elements as needed.
 
         // ENTER
         // Create new elements as needed.
-        district.enter().append("g")
+        var newElements = district.enter().append("g")
             .attr("class", function (d) {
                 return "district " + d.name;
             })
-            .append("path")
-            .attr("class", "line")
-            .attr("d", function (d) { return line(d.values); })
-            .style("stroke", function (d) { return getColor(d.name); })
-            .append("text")
-            .datum(function (d) { return { name: d.name, value: d.values[d.values.length - 1] }; })
-            .attr("transform", function (d) { return "translate(" + x(d.value.date) + "," + y(d.value.count) + ")"; })
-            .attr("x", 3)
-            .attr("dy", ".35em")
-            .text(function (d) { return d.name; });
+
+        var path = newElements.append("path")
+        .attr("class", "line")
+        .attr("d", function (d) { return line(d.values); })
+        .style("stroke", function (d) { return getColor(d.name); });
+
+        var text = newElements.append("text")
+        .datum(function (d) { return { name: d.name, value: d.values[d.values.length - 1] }; })
+        .attr("transform", function (d) { return "translate(" + x(d.value.date) + "," + y(d.value.count) + ")"; })
+        .attr("x", 3)
+        .attr("dy", ".35em")
+        .text(function (d) { return d.name; });
+
+        var focusCircle = newElements.append("circle")
+            .attr("class", "focus")
+            .attr("r", 3)
+            .style("fill", function (d) { return getColor(d.name); })
+            .style("display", "none");
+
+        var selectedCircle = newElements.append("circle")
+            .attr("class", "selected")
+            .attr("r", 5)
+            .attr("transform", function (d) { return "translate(" + x(d.values[data.selectedParams.weekID].date) + "," + y(d.values[data.selectedParams.weekID].count) + ")"; })
+            .style("fill", function (d) { return getColor(d.name); })
+            .style("stroke", "black")
+            .style("stroke-width", "2px");
 
         // ENTER + UPDATE
         // Appending to the enter selection expands the update selection to include
@@ -208,6 +215,28 @@
 
         return chart;
     };
+
+    chart.updateSelectedWeek = function () {
+        if (!data) {
+            return;
+        }
+
+        var selectedCircle = svg.selectAll(".selected")
+            .attr("transform", function (d) { return "translate(" + x(d.values[data.selectedParams.weekID].date) + "," + y(d.values[data.selectedParams.weekID].count) + ")"; });
+
+        return chart;
+    };
+
+    chart.updateHoveredDistrict = function () {
+        if (!data) {
+            return;
+        }
+
+        var hoveredDistrict = svg.selectAll(".line")
+            .classed("hovered", function (d) {
+                return d.name == data.hoveredDistrict();
+            });
+    }
 
     // return the object
     return chart;

@@ -48,8 +48,8 @@
             element: document.getElementById(containerId),
             setProjection: function (element) {
                 var projection = d3.geo.equirectangular()
-                  .center([-10.8124935, 8.2308452]) // -10.8451467	6.7562926
-                  .scale(4000)
+                  .center([-11.5, 8.8])
+                  .scale(4500)
                   .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
                 var path = d3.geo.path()
                   .projection(projection);

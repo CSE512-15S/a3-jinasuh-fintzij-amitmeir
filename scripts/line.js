@@ -17,7 +17,7 @@
     chart.dispatch = dispatch;
 
     containerId = "#" + containerId;
-    var margin = { top: 20, right: 20, bottom: 30, left: 50 };
+    var margin = { top: 20, right: 20, bottom: 50, left: 50 };
 
     var width = $(containerId).width() - margin.left - margin.right;
     var height = $(containerId).height() - margin.top - margin.bottom;
@@ -52,6 +52,7 @@
 
     var xAxis = d3.svg.axis()
         .scale(x)
+        .ticks(5)
         .orient("bottom");
 
     var yAxis = d3.svg.axis()
@@ -150,7 +151,7 @@
             .attr("y", 6)
             .attr("dy", ".71em")
             .style("text-anchor", "end")
-            .text("Temperature (ºF)");
+            .text("New Case Count");
 
         // DATA JOIN
         // Join new data with old elements, if any.
@@ -174,12 +175,12 @@
         .attr("d", function (d) { return line(d.values); })
         .style("stroke", function (d) { return getColor(d.name); });
 
-        var text = newElements.append("text")
-        .datum(function (d) { return { name: d.name, value: d.values[d.values.length - 1] }; })
-        .attr("transform", function (d) { return "translate(" + x(d.value.date) + "," + y(d.value.count) + ")"; })
-        .attr("x", 3)
-        .attr("dy", ".35em")
-        .text(function (d) { return d.name; });
+        //var text = newElements.append("text")
+        //.datum(function (d) { return { name: d.name, value: d.values[d.values.length - 1] }; })
+        //.attr("transform", function (d) { return "translate(" + x(d.value.date) + "," + y(d.value.count) + ")"; })
+        //.attr("x", 3)
+        //.attr("dy", ".35em")
+        //.text(function (d) { return d.name; });
 
         var focusCircle = newElements.append("circle")
             .attr("class", "focus")

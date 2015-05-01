@@ -36,11 +36,20 @@ var sharedData = {
         }
     },
     hoveredDistrict: ko.observable(),
+    hoveredDistrictName: ko.observable(),
+    hoveredCountryName: ko.observable(),
+    hoveredDistrictPopulationSize: ko.observable(),
+    selectedWeek: ko.observable(),
+    totalCases: ko.observable(),
+    hoveredDistrictFoi: ko.observable(),
+    playing: ko.observable(false),
 };
 
 
 // Wire up events
 $(document).ready(function onReady() {
+    ko.applyBindings(sharedData);
+
     loadData();
 
     sharedData.selectedDistricts.subscribe(function () {
@@ -48,9 +57,30 @@ $(document).ready(function onReady() {
     });
 
     sharedData.hoveredDistrict.subscribe(function () {
-        lineViz.updateHoveredDistrict();
+        onDistrictHovered();
     })
 });
+
+function onDistrictHovered() {
+    var hoveredDistrictId = sharedData.hoveredDistrict();
+    if (hoveredDistrictId) {
+        var districtData = sharedData.districtData.get(hoveredDistrictId);
+        var dataPoint = districtData[sharedData.selectedParams.weekID];
+        sharedData.hoveredDistrictName("x" + dataPoint.DistrictID); // dataPoint.DistrictID
+        sharedData.hoveredCountryName(dataPoint.Country);
+        sharedData.hoveredDistrictPopulationSize("todo123"); // dataPoint.PopulationSize
+        sharedData.hoveredDistrictFoi(sharedData.getFOI(dataPoint));
+
+    }
+    else {
+        sharedData.hoveredDistrictName(""); // dataPoint.DistrictID
+        sharedData.hoveredCountryName("");
+        sharedData.hoveredDistrictPopulationSize(0); // dataPoint.PopulationSize
+        sharedData.hoveredDistrictFoi(0);
+    }
+
+    lineViz.updateHoveredDistrict();
+}
 
 function loadData() {
     queue()
@@ -161,19 +191,24 @@ function loadData() {
 
         // Date slider
         var dateSlider = $("#dateSlider");
-        var datePlayButton = $("#datePlayButton");
+        var datePlayButton = $(".playbutton");
 
         dateSlider.slider({
             min: sharedData.weekIDExtent[0],
             max: sharedData.weekIDExtent[1],
             step: 1,
-            slide: function (event, ui) { updateSlider(ui.value, "#dateValue", "weekID"); },
-            change: function (event, ui) { updateSlider(ui.value, "#dateValue", "weekID"); },
+            slide: function (event, ui) { updateWeek(ui.value); },
+            change: function (event, ui) { updateWeek(ui.value); },
         });
 
         datePlayButton.click(function () {
-            dateSlider.slider("value", 0);
-            incrementDateSlider();
+            if (!sharedData.playing()) {
+                sharedData.playing(true);
+                incrementDateSlider();
+            }
+            else {
+                sharedData.playing(false);
+            }
         });
 
         // Data type
@@ -194,22 +229,30 @@ function loadData() {
 
             if (current < max) {
                 setTimeout(function () {
-                    dateSlider.slider("value", current + 1);
-                    incrementDateSlider();
+                    if (sharedData.playing()) {
+                        dateSlider.slider("value", current + 1);
+                        incrementDateSlider();
+                    }
                 }, 100);
+            }
+            else {
+                sharedData.playing(false);
+                dateSlider.slider("value", 0);
             }
         }
 
-        function updateSlider(v, valueId, property) {
-            var myValue = $(valueId);
-            if (v != sharedData.selectedParams[property]) {
-                myValue.html(v);
-                sharedData.selectedParams[property] = v;
+        function updateWeek(week, force) {
+            if (week != sharedData.weekID || force) {
+                sharedData.selectedParams.weekID = week;
                 mapViz.update();
                 lineViz.updateSelectedWeek();
+                sharedData.selectedWeek(sharedData.dateIndices[week])
+                sharedData.totalCases("x123");
             }
-            return v;
+            return week;
         }
+
+        updateWeek(0, true);
     }
 
 }

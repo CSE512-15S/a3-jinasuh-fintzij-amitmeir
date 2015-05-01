@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>Ebola Force of Infection</title>
 
-    <!-- viz styles -->
-    <link href="styles/style.css" rel="stylesheet" type="text/css">
+    <!-- open sans fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
     <!-- external styles -->
     <link href="libraries/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css">
@@ -26,6 +26,9 @@
     <script src="libraries/datamaps/datamaps.world.js"></script>
     <script src="libraries/knockoutjs/knockout-3.3.0.js"></script>
 
+    <!-- viz styles -->
+    <link href="styles/style.css" rel="stylesheet" type="text/css">
+
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -37,7 +40,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Ebola Outbreak</a>
+                <div class="navbar-title">2014 Ebola Outbreak in West Africa</div>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -50,25 +53,56 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-3 sidebar">
-                <div id="selector" class="row btn-group">
-                    <button id="confirmed" type="button" class="btn active">Confirmed</button>
-                    <button id="probable" type="button" class="btn">Probable</button>
+            <div class="sidebar">
+                <div class="top">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam et hendrerit eros, vitae sollicitudin arcu. Proin eget ligula eu ex ullamcorper molestie. Sed ac turpis lorem. Curabitur ex metus, rutrum nec vulputate id, malesuada ullamcorper nisl. Maecenas ex ex, volutpat ut dolor quis, hendrerit bibendum nisl. Duis felis lorem, pellentesque nec rutrum ac, pretium lacinia tortor. Integer ut commodo nunc, ut efficitur tellus. Vestibulum non elementum urna. Morbi sagittis nunc et dui ornare aliquam.
                 </div>
-                <div class="row">
-                    Week ID
-                    <button id="datePlayButton">play</button>
-                    <div id="dateValue">0</div>
-                    <div id="dateSlider"></div>
-                </div>
-                <div id="lineChart">
-                    New Case Count
+                <div class="bottom">
+                    <div id="lineChart">
+                    </div>
+                    <div class="playcontrol">
+                        <button class="playbutton" data-bind="css: { active: playing }"><span class="glyphicon" data-bind="css: { 'glyphicon-play': !playing(), 'glyphicon-pause': playing() }"></span></button>
+                        <div class="sliderContainer">
+                            <div id="dateSlider"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-9 main">
-                <h1 class="page-header">Force of Infection</h1>
-                <div id="map" style="height:800px; width:800px">
-                    <!--<img src="data/background.png" />-->
+            <div class="main">
+                <div class="container">
+                    <div class="layer">
+                        <div>
+                            <span class="foi" data-bind="visible: !hoveredDistrictName()">Force of Infection</span>
+                            <span class="district" data-bind="text: hoveredDistrictName"></span>
+                            <span class="country" data-bind="text: hoveredCountryName"></span>
+                        </div>
+                        <div class="population" data-bind="visible: hoveredDistrictName">
+                            <span>Population Size: </span>
+                            <span data-bind="text: hoveredDistrictPopulationSize"></span>
+                        </div>
+                    </div>
+                    <div class="layer" id="map">
+                        <!--<img src="data/background.png" />-->
+                    </div>
+
+                    <div class="layer-play">
+                        <div id="selector" class="row btn-group">
+                            <button id="confirmed" type="button" class="btn active">Confirmed</button>
+                            <button id="probable" type="button" class="btn">Probable</button>
+                        </div>
+                        <button class="playbutton" data-bind="css: { active: playing }"><span class="glyphicon" data-bind="css: { 'glyphicon-play': !playing(), 'glyphicon-pause': playing() }"></span></button>
+                    </div>
+
+                    <div class="layer-bottom">
+                        <div class="date">
+                            <span>Week of </span>
+                            <span data-bind="text: selectedWeek"></span>
+                        </div>
+                        <div class="totalcases">
+                            <span>Total Cases </span>
+                            <span data-bind="text: totalCases"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

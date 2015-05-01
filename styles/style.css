@@ -51,6 +51,24 @@ body {
         color: #ccc;
     }
 
+.ui-slider {
+    border-radius: 0;
+    height: 5px;
+    border: none;
+    background: #eee;
+    margin-top: 2px;
+}
+
+    .ui-slider > .ui-slider-handle {
+        left: 0%;
+        width: 5px;
+        top: -7px;
+        border: none;
+        opacity: 0.5;
+        background: #fb6a4a;
+        margin-left: -3px;
+    }
+
 /*
  * Sidebar
  */

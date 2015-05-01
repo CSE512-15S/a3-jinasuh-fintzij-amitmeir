@@ -13,18 +13,18 @@
                 borderColor: function (data) {
                     return '#4F4F4F';
                 },
-                highlightBorderColor: 'black',
+                highlightBorderColor: '#333',
                 highlightBorderWidth: 0.5,
-                highlightFillColor: '#FFEC38',
+                highlightFillColor: 'rgba(0,0,0,0.1)',
+                popupOnHover: false,
+                //popupTemplate: function (geography, data) {
+                //    var popup = '<div class="hoverinfo"> <strong> District: ' + geography.properties.ID + ' </strong> Country: ' + geography.properties.COUNTRY;
+                //    if (data) {
+                //        popup = popup + '+++' + data.ConfirmedCount + '</div>';
+                //    }
 
-                popupTemplate: function (geography, data) {
-                    var popup = '<div class="hoverinfo"> <strong> District: ' + geography.properties.ID + ' </strong> Country: ' + geography.properties.COUNTRY;
-                    if (data) {
-                        popup = popup + '+++' + data.ConfirmedCount + '</div>';
-                    }
-
-                    return popup;
-                },
+                //    return popup;
+                //},
                 onClick: function (geography, datum) {
                     datum.selected = !datum.selected;
                     var color;

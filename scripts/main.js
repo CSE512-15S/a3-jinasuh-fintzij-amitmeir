@@ -72,6 +72,8 @@ var sharedData = {
 $(document).ready(function onReady() {
     ko.applyBindings(sharedData);
 
+    $('#cover').modal('show');
+
     loadData();
 
     sharedData.selectedDistricts.subscribe(function () {
@@ -219,6 +221,12 @@ function loadData() {
     }
 
     function initializeControls() {
+
+        var enterbutton = $("#enterbutton");
+        enterbutton.click(function () {
+            //$(".cover").css("display", "none");
+            //$("body").css("overflow-x", "auto");
+        })
 
         // Date slider
         var dateSlider = $("#dateSlider");

@@ -7,6 +7,66 @@ html {
     overflow-y: hidden;
 }
 
+.modal-dialog, .modal-content {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+#cover {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+    #cover .background {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: url("ebola.jpg");
+        background-size: cover;
+        background-repeat: repeat;
+        background-position: 50% 50%;
+    }
+
+    #cover .title {
+        position: absolute;
+        bottom: 200px;
+        right: 50px;
+        text-align: right;
+        font-size: 80px;
+        color: white;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    #cover .credit {
+        position: absolute;
+        bottom: 50px;
+        left: 50px;
+        text-align: left;
+        font-size: 16px;
+        color: white;
+    }
+
+    #cover button {
+        position: absolute;
+        bottom: 100px;
+        right: 50px;
+        font-size: 40px;
+        color: white;
+        background: transparent;
+        border: 3px white solid;
+        border-radius: 0;
+        width: 150px;
+    }
+
+        #cover button:hover {
+            color: black;
+            background: white;
+        }
+
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
     padding-top: 50px;
@@ -14,6 +74,7 @@ body {
     font-weight: 300;
     background-color: #eee;
     overflow-y: hidden;
+    overflow-x: hidden;
     height: 100%;
 }
 

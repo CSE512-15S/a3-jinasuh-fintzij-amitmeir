@@ -20,6 +20,7 @@ body {
     body > .container-fluid {
         height: 100%;
         overflow-y: auto;
+        min-width: 1750px;
     }
 
 .navbar {
@@ -81,6 +82,7 @@ body {
     width: 850px;
     margin: 10px;
     padding-left: 20px;
+    padding-bottom: 30px;
 }
 
     .sidebar > .top {
@@ -136,6 +138,7 @@ body {
 .main {
     padding-top: 10px;
     float: left;
+    padding-bottom: 30px;
 }
 
     .main > .container {
@@ -249,12 +252,12 @@ body {
 .axis path,
 .axis line {
     fill: none;
-    stroke: #000;
+    stroke: #555;
     shape-rendering: crispEdges;
 }
 
 .x.axis path {
-    display: none;
+    /*display: none;*/
 }
 
 .line {

@@ -52,56 +52,54 @@
     </nav>
 
     <div class="container-fluid">
-        <div class="row">
-            <div class="sidebar">
-                <div class="top">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam et hendrerit eros, vitae sollicitudin arcu. Proin eget ligula eu ex ullamcorper molestie. Sed ac turpis lorem. Curabitur ex metus, rutrum nec vulputate id, malesuada ullamcorper nisl. Maecenas ex ex, volutpat ut dolor quis, hendrerit bibendum nisl. Duis felis lorem, pellentesque nec rutrum ac, pretium lacinia tortor. Integer ut commodo nunc, ut efficitur tellus. Vestibulum non elementum urna. Morbi sagittis nunc et dui ornare aliquam.
+        <div class="sidebar">
+            <div class="top">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam et hendrerit eros, vitae sollicitudin arcu. Proin eget ligula eu ex ullamcorper molestie. Sed ac turpis lorem. Curabitur ex metus, rutrum nec vulputate id, malesuada ullamcorper nisl. Maecenas ex ex, volutpat ut dolor quis, hendrerit bibendum nisl. Duis felis lorem, pellentesque nec rutrum ac, pretium lacinia tortor. Integer ut commodo nunc, ut efficitur tellus. Vestibulum non elementum urna. Morbi sagittis nunc et dui ornare aliquam.
+            </div>
+            <div class="bottom">
+                <div id="lineChart">
                 </div>
-                <div class="bottom">
-                    <div id="lineChart">
-                    </div>
-                    <div class="playcontrol">
-                        <button class="playbutton" data-bind="css: { active: playing }"><span class="glyphicon" data-bind="css: { 'glyphicon-play': !playing(), 'glyphicon-pause': playing() }"></span></button>
-                        <div class="sliderContainer">
-                            <div id="dateSlider"></div>
-                        </div>
+                <div class="playcontrol">
+                    <button class="playbutton" data-bind="css: { active: playing }"><span class="glyphicon" data-bind="css: { 'glyphicon-play': !playing(), 'glyphicon-pause': playing() }"></span></button>
+                    <div class="sliderContainer">
+                        <div id="dateSlider"></div>
                     </div>
                 </div>
             </div>
-            <div class="main">
-                <div class="container">
-                    <div class="layer">
-                        <div>
-                            <span class="foi" data-bind="visible: !hoveredDistrictName()">Force of Infection</span>
-                            <span class="district" data-bind="text: hoveredDistrictName"></span>
-                            <span class="country" data-bind="text: hoveredCountryName"></span>
-                        </div>
-                        <div class="population" data-bind="visible: hoveredDistrictName">
-                            <span>Population Size: </span>
-                            <span data-bind="text: hoveredDistrictPopulationSize"></span>
-                        </div>
+        </div>
+        <div class="main">
+            <div class="container">
+                <div class="layer">
+                    <div>
+                        <span class="foi" data-bind="visible: !hoveredDistrictName()">Force of Infection</span>
+                        <span class="district" data-bind="text: hoveredDistrictName"></span>
+                        <span class="country" data-bind="text: hoveredCountryName"></span>
                     </div>
-                    <div class="layer" id="map">
-                        <!--<img src="data/background.png" />-->
+                    <div class="population" data-bind="visible: hoveredDistrictName">
+                        <span>Population Size: </span>
+                        <span data-bind="text: hoveredDistrictPopulationSize"></span>
                     </div>
+                </div>
+                <div class="layer" id="map">
+                    <!--<img src="data/background.png" />-->
+                </div>
 
-                    <div class="layer-play">
-                        <div id="selector" class="row btn-group">
-                            <button id="confirmed" type="button" class="btn active">Confirmed</button>
-                            <button id="probable" type="button" class="btn">Probable</button>
-                        </div>
-                        <button class="playbutton" data-bind="css: { active: playing }"><span class="glyphicon" data-bind="css: { 'glyphicon-play': !playing(), 'glyphicon-pause': playing() }"></span></button>
+                <div class="layer-play">
+                    <div id="selector" class="row btn-group">
+                        <button id="confirmed" type="button" class="btn active">Confirmed</button>
+                        <button id="probable" type="button" class="btn">Probable</button>
                     </div>
+                    <button class="playbutton" data-bind="css: { active: playing }"><span class="glyphicon" data-bind="css: { 'glyphicon-play': !playing(), 'glyphicon-pause': playing() }"></span></button>
+                </div>
 
-                    <div class="layer-bottom">
-                        <div class="date">
-                            <span>Week of </span>
-                            <span data-bind="text: selectedWeek"></span>
-                        </div>
-                        <div class="totalcases">
-                            <span>Total Cases </span>
-                            <span data-bind="text: totalCases"></span>
-                        </div>
+                <div class="layer-bottom">
+                    <div class="date">
+                        <span>Week of </span>
+                        <span data-bind="text: selectedWeek"></span>
+                    </div>
+                    <div class="totalcases">
+                        <span>Total Cases </span>
+                        <span data-bind="text: totalCases"></span>
                     </div>
                 </div>
             </div>

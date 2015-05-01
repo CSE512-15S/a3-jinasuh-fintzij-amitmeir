@@ -59,6 +59,9 @@
             <div class="bottom">
                 <div id="lineChart">
                 </div>
+                <div class="helptext" data-bind="visible: !selectedDistricts() || selectedDistricts().length == 0">
+                    Please select districts from the map to see the new case counts here.
+                </div>
                 <div class="playcontrol">
                     <button class="playbutton" data-bind="css: { active: playing }"><span class="glyphicon" data-bind="css: { 'glyphicon-play': !playing(), 'glyphicon-pause': playing() }"></span></button>
                     <div class="sliderContainer">

@@ -108,6 +108,15 @@ body {
             left: 0;
         }
 
+        .sidebar > .bottom > .helptext {
+            position: absolute;
+            width: 400px;
+            left: calc((100% - 400px) /2);
+            top: 100px;
+            font-size: 30px;
+            color: #aaa;
+        }
+
         .sidebar > .bottom > .playcontrol {
             position: absolute;
             width: 100%;
@@ -252,8 +261,15 @@ body {
 .axis path,
 .axis line {
     fill: none;
-    stroke: #555;
+    stroke: #aaa;
     shape-rendering: crispEdges;
+}
+
+.axis text {
+    stroke: #aaa;
+    font-weight: 300;
+    font-size: 12px;
+    font-family: 'Open Sans', 'Segoe UI', Helvetica, Verdana, Arial, sans-serif;
 }
 
 .x.axis path {

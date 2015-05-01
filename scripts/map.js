@@ -26,14 +26,24 @@
                     return popup;
                 },
                 onClick: function (geography, datum) {
+                    datum.selected = !datum.selected;
+                    var color;
                     if (datum.selected) {
-                        data.selectedDistricts.push(datum.DistrictID);
+                        if (data.selectedDistricts().length >= 10) {
+                            datum.selected = false;
+                        }
+                        else {
+                            data.selectedDistricts.push(datum.DistrictID);
+                            data.hoveredDistrict(datum.DistrictID);
+                            color = data.getColor(datum.DistrictID);
+                        }
                     }
                     else {
                         data.selectedDistricts.remove(datum.DistrictID);
                     }
 
                     console.log(datum.DistrictID + "clicked");
+                    return color;
                 },
                 onHover: function (geography, datum) {
                     if (datum) {

@@ -117,6 +117,15 @@ body {
             color: #aaa;
         }
 
+        .sidebar > .bottom > .selectedtext {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            text-align: right;
+            color: #ccc;
+            font-size: 18px;
+        }
+
         .sidebar > .bottom > .playcontrol {
             position: absolute;
             width: 100%;

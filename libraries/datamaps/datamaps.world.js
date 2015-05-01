@@ -279,21 +279,26 @@
                     var $this = d3.select(this);
                     var datum = self.options.data[d.id] || {};
 
-                    // Update selected flag and stroke width
-                    datum.selected = !datum.selected;
+                    // Update selected flag in onclick (hack) and stroke width
+                    var color = options.onClick(d, datum);
+
                     if (datum.selected) {
-                        $this.style('stroke-width', 3);
+                        $this.style('stroke-width', 3)
+                        .style('stroke', color);
                     }
                     else {
-                        $this.style('stroke-width', options.borderWidth);
+                        $this.style('stroke-width', options.borderWidth)
+                        .style('stroke', function (datum) {
+                            return val(datum.borderColor, options.borderColor, datum);
+                        })
                     }
 
                     // Save current attributes
                     var previousAttributes = JSON.parse($this.attr('data-previousAttributes'));
                     previousAttributes['stroke-width'] = $this.style('stroke-width');
+                    previousAttributes['stroke'] = $this.style('stroke');
                     $this.attr('data-previousAttributes', JSON.stringify(previousAttributes));
 
-                    options.onClick(d, datum);
                 }
             })
             ;

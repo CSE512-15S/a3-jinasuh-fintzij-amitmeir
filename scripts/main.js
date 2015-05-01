@@ -43,6 +43,28 @@ var sharedData = {
     totalCases: ko.observable(),
     hoveredDistrictFoi: ko.observable(),
     playing: ko.observable(false),
+    colors: d3.scale.category10(),
+    colorMap: d3.map(),
+    getColor: function (districtID) {
+        var color = sharedData.colorMap.get(districtID);
+        if (color) {
+            return color;
+        }
+        else {
+            var usedColors = sharedData.colorMap.values();
+
+            for (var i = 0; i < 10; i++) {
+                var c = sharedData.colors(i);
+                if (usedColors.indexOf(c) < 0) {
+                    sharedData.colorMap.set(districtID, c);
+                    color = c;
+                    break;
+                }
+            }
+
+            return color;
+        }
+    },
 };
 
 
@@ -53,6 +75,15 @@ $(document).ready(function onReady() {
     loadData();
 
     sharedData.selectedDistricts.subscribe(function () {
+        // Clean up colors
+        var usedColors = sharedData.colorMap.keys();
+        for (var i = 0; i < usedColors.length; i++) {
+            var key = usedColors[i];
+            if (sharedData.selectedDistricts().indexOf(key) < 0) {
+                sharedData.colorMap.remove(key);
+            }
+        }
+
         lineViz.update();
     });
 

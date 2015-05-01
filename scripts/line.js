@@ -33,22 +33,22 @@
     var y = d3.scale.linear()
         .range([height, 0]);
 
-    var color = d3.scale.category10();
-    var colorQueue = d3.range(0, 10, 1).map(function (i) { return color(i); });
-    var colorMap = d3.map();
-    var getColor = function (districtName) {
-        var districtColor = colorMap.get(districtName);
-        if (!districtColor) {
-            if (colorQueue.length == 0) {
-                colorQueue.push.apply(colorQueue, d3.range(0, 10, 1).map(function (i) { return color(i); }));
-            }
+    //var color = d3.scale.category10();
+    //var colorQueue = d3.range(0, 10, 1).map(function (i) { return color(i); });
+    //var colorMap = d3.map();
+    //var getColor = function (districtName) {
+    //    var districtColor = colorMap.get(districtName);
+    //    if (!districtColor) {
+    //        if (colorQueue.length == 0) {
+    //            colorQueue.push.apply(colorQueue, d3.range(0, 10, 1).map(function (i) { return color(i); }));
+    //        }
 
-            districtColor = colorQueue.pop();
-            colorMap.set(districtName, districtColor);
-        }
+    //        districtColor = colorQueue.pop();
+    //        colorMap.set(districtName, districtColor);
+    //    }
 
-        return districtColor;
-    }
+    //    return districtColor;
+    //}
 
     var xAxis = d3.svg.axis()
         .scale(x)
@@ -123,13 +123,13 @@
             };
         });
 
-        // Return color for unselected districts
-        colorMap.forEach(function (key, value) {
-            if (data.selectedDistricts().indexOf(key) < 0) {
-                colorMap.remove(key);
-                colorQueue.unshift(value);
-            }
-        })
+        //// Return color for unselected districts
+        //colorMap.forEach(function (key, value) {
+        //    if (data.selectedDistricts().indexOf(key) < 0) {
+        //        colorMap.remove(key);
+        //        colorQueue.unshift(value);
+        //    }
+        //})
 
 
         x.domain(data.dateExtent);
@@ -173,7 +173,7 @@
         var path = newElements.append("path")
         .attr("class", "line")
         .attr("d", function (d) { return line(d.values); })
-        .style("stroke", function (d) { return getColor(d.name); });
+        .style("stroke", function (d) { return data.getColor(d.name); });
 
         //var text = newElements.append("text")
         //.datum(function (d) { return { name: d.name, value: d.values[d.values.length - 1] }; })
@@ -185,14 +185,14 @@
         var focusCircle = newElements.append("circle")
             .attr("class", "focus")
             .attr("r", 3)
-            .style("fill", function (d) { return getColor(d.name); })
+            .style("fill", function (d) { return data.getColor(d.name); })
             .style("display", "none");
 
         var selectedCircle = newElements.append("circle")
             .attr("class", "selected")
             .attr("r", 5)
             .attr("transform", function (d) { return "translate(" + x(d.values[data.selectedParams.weekID].date) + "," + y(d.values[data.selectedParams.weekID].count) + ")"; })
-            .style("fill", function (d) { return getColor(d.name); })
+            .style("fill", function (d) { return data.getColor(d.name); })
             .style("stroke", "black")
             .style("stroke-width", "2px");
 
@@ -202,7 +202,7 @@
         // the enter selection will apply to both entering and updating nodes.
         district.selectAll(".line")
             .attr("d", function (d) { return line(d.values); })
-            .style("stroke", function (d) { return getColor(d.name); });
+            .style("stroke", function (d) { return data.getColor(d.name); });
 
         district.selectAll("text")
             .attr("transform", function (d) { return "translate(" + x(d.value.date) + "," + y(d.value.count) + ")"; })

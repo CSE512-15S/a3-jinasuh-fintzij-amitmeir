@@ -60,7 +60,10 @@
                 <div id="lineChart">
                 </div>
                 <div class="helptext" data-bind="visible: !selectedDistricts() || selectedDistricts().length == 0">
-                    Please select districts from the map to see the new case counts here.
+                    Please select up to <strong>10</strong> districts from the map to see the new case counts here.
+                </div>
+                <div class="selectedtext" data-bind="visible: selectedDistricts() && selectedDistricts().length > 0">
+                    <strong data-bind="text: selectedDistricts().length"></strong> Selected
                 </div>
                 <div class="playcontrol">
                     <button class="playbutton" data-bind="css: { active: playing }"><span class="glyphicon" data-bind="css: { 'glyphicon-play': !playing(), 'glyphicon-pause': playing() }"></span></button>

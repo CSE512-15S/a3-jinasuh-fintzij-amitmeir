@@ -254,6 +254,9 @@ function loadData() {
 
         datePlayButton.click(function () {
             if (!sharedData.playing()) {
+                if (dateSlider.slider("value") == sharedData.weekIDExtent[1]) {
+                    dateSlider.slider("value", 0);
+                }
                 sharedData.playing(true);
                 incrementDateSlider();
             }
@@ -285,11 +288,10 @@ function loadData() {
                         dateSlider.slider("value", current + 1);
                         incrementDateSlider();
                     }
-                }, 100);
+                }, 500);
             }
             else {
                 sharedData.playing(false);
-                dateSlider.slider("value", 0);
             }
         }
 

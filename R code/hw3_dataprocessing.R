@@ -120,5 +120,50 @@ names(final_data)[2] <- "DistrictName"
 sum(sapply(popdat[,1],function(str) str %in% final_data$District_Name))
 final_data$PopulationSize <- sapply(final_data$DistrictName,function(str) popdat[which(str==popdat[,1]),3])
 
-
 write.csv(final_data, file = "EbolaDataFoi.csv")
+
+
+# Global View Data Set ------------------------------
+#Compress data by week
+globalDat <- final_data[,c(3,4,5,9,12)]
+Probable <- tapply(globalDat[,2],INDEX=globalDat$WeekID,function(x) sum(x))
+Confirmed <- tapply(globalDat[,3],INDEX=globalDat$WeekID,function(x) sum(x))
+PopulationSize <- tapply(globalDat[,5],INDEX=globalDat$WeekID,function(x) sum(x))
+
+compute.FOI <- function(counts,population) {
+  susceptible <- counts
+  
+  infected <- counts 
+  for(i in 2:length(counts)) {
+    infected[i] <- sum(counts[i:max(1,i-2)])
+  }
+  
+  susceptible <- counts
+  countSum <- cumsum(counts)
+  for(i in 1:length(counts)) {
+    susceptible[i] <- population[i] - countSum[i]
+  }
+  
+  FOI <- as.numeric(infected)*as.numeric(susceptible)/as.numeric(population)
+  #FOI <- log(1+FOI)
+  return(data.frame(FOI=FOI,cumsum=countSum))
+}
+
+# par(mar = c(5, 4, 4, 4) + 0.3)  # Leave space for z axis
+# plot(FOI,type="l",col="red")
+# par(new = TRUE)
+# plot(countSum, type = "l", axes = FALSE, bty = "n", xlab = "", ylab = "")
+
+ProbableFOI <- compute.FOI(Probable,PopulationSize)
+ConfirmedFOI <- compute.FOI(Confirmed,PopulationSize)
+
+globalDat <- data.frame(Week=unique(globalDat$Week),
+                        ProbableFOI=ProbableFOI$FOI,
+                        ConfirmedFOI=ConfirmedFOI$FOI,
+                        ProbableCumsum=ProbableFOI$cumsum,
+                        ConfirmedCumsum=ConfirmedFOI$cumsum,
+                        WeekID=0:(length(Probable)-1))
+
+write.csv(globalDat,file="globalFOI.csv")
+
+

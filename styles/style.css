@@ -116,20 +116,28 @@ body {
 
 .ui-slider {
     border-radius: 0;
-    height: 5px;
+    height: 15px;
     border: none;
-    background: #eee;
-    margin-top: 2px;
+    border-top: 5px solid #eee;
+    border-bottom: 10px solid transparent;
+    cursor: pointer;
 }
 
     .ui-slider > .ui-slider-handle {
         left: 0%;
-        width: 5px;
-        top: -7px;
+        width: 15px;
+        top: -5px;
         border: none;
         opacity: 0.5;
-        background: #fb6a4a;
-        margin-left: -3px;
+        background: transparent;
+        outline: none;
+        cursor: pointer;
+        border-radius: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 20px solid #fb6a4a;
+        height: 15px;
+        box-sizing: border-box;
     }
 
 /*

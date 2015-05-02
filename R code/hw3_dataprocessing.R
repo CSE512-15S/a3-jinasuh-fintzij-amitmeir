@@ -87,11 +87,15 @@ rm(confirmed.foi,probable.foi)
 final_data <- cbind(eboladat,foi_mat)
 
 #Deleting spaces and apostrophies
-final_data$District <- sapply(final_data$District,function(str) gsub(" ","",str))
-final_data$District <- sapply(final_data$District,function(str) gsub("'","",str))
+final_data$District_ID <- sapply(final_data$District,function(str) gsub(" ","",str))
+final_data$District_ID <- sapply(final_data$District,function(str) gsub("'","",str))
+names(final_data)[2] <- "District_Name"
+
+#Adding Week_ID
+final_data$WeekID <- sapply(final_data$Week,function(str) which(weeks==str))
 
 #log transforming foi
-final_data[,6:ncol(final_data)] <- apply(final_data[,6:ncol(final_data)],2,function(x) log(x+1))
+final_data[,6:7] <- apply(final_data[,6:7],2,function(x) log(x+1))
 
 #Adding comulative sum of cases
 probableCumSum <- numeric(nrow(final_data))
@@ -103,5 +107,10 @@ for(district in unique(final_data$District)) {
 }
 
 final_data <- cbind(final_data,probable_cumulative=probableCumSum,confirmed_cumulative=confirmedCumSum)
+
+#Chaging variables names to fit web implementation
+names(final_data)[8] <- "DistrictID"
+names(final_data)[7] <- "ProbableFOI"
+names(final_data)[6] <- "ConfirmedFOI"
 
 write.csv(final_data, file = "EbolaDataFoi.csv")

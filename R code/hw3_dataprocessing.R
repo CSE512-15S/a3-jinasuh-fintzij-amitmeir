@@ -54,15 +54,15 @@ computation.wrapper <- function(config,dat,popdat,adjmat) {
 
 infectivity_seq <- 1
 samp_prob <- 1
-neighbor_district <- 0.02
+neighbor_district <- 0.05
 neighbor_country <- 0.05
 
 param_combns <- expand.grid(infectivity_seq, samp_prob, neighbor_district, neighbor_country)
 
-sfInit(paralle=TRUE,cpus=3)
-sfSource("ebola functions.R")
+#sfInit(paralle=TRUE,cpus=3)
+#sfSource("ebola functions.R")
 foi_mat <- apply(param_combns,1,computation.wrapper,dat=eboladat,popdat=popdat,adjmat=adjmat)
-sfStop()
+#sfStop()
 
 #backup
 #save(foi_mat,file="foi matrix full.Robj")

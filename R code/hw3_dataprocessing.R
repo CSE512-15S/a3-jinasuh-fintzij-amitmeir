@@ -86,8 +86,8 @@ rm(confirmed.foi,probable.foi)
 final_data <- cbind(eboladat,foi_mat)
 
 #Deleting spaces and apostrophies
-final_data$District_ID <- sapply(final_data$District,function(str) gsub(" ","",str))
-final_data$District_ID <- sapply(final_data$District,function(str) gsub("'","",str))
+final_data$DistrictID <- sapply(final_data$District,function(str) gsub(" ","",str))
+final_data$DistrictID <- sapply(final_data$DistrictID,function(str) gsub("'","",str))
 names(final_data)[2] <- "District_Name"
 
 #Adding Week_ID

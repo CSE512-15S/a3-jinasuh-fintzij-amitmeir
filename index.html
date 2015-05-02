@@ -88,43 +88,41 @@
             </div>
         </div>
         <div class="main">
-            <div class="container">
-                <div class="layer">
-                    <div>
-                        <span class="foi" data-bind="visible: !hoveredDistrictName()">Force of Infection</span>
-                        <span class="district" data-bind="text: hoveredDistrictName"></span>
-                        <span class="country" data-bind="text: hoveredCountryName"></span>
-                    </div>
-                    <div class="population" data-bind="visible: hoveredDistrictName">
-                        <span>Population Size: </span>
-                        <span data-bind="text: hoveredDistrictPopulationSize"></span>
-                    </div>
+            <div class="layer">
+                <div>
+                    <span class="foi" data-bind="visible: !hoveredDistrictName()">Force of Infection</span>
+                    <span class="district" data-bind="text: hoveredDistrictName"></span>
+                    <span class="country" data-bind="text: hoveredCountryName"></span>
                 </div>
-                <div class="layer" id="map">
-                    <!--<img src="data/background.png" />-->
+                <div class="population" data-bind="visible: hoveredDistrictName">
+                    <span>Population Size: </span>
+                    <span data-bind="text: hoveredDistrictPopulationSize"></span>
                 </div>
+            </div>
+            <div class="layer" id="map">
+                <!--<img src="data/background.png" />-->
+            </div>
 
-                <div class="layer-play">
-                    <div id="selector" class="row btn-group">
-                        <button id="confirmed" type="button" class="btn active">Confirmed</button>
-                        <button id="probable" type="button" class="btn">Probable</button>
-                    </div>
-                    <button class="playbutton" data-bind="css: { active: playing }"><span class="glyphicon" data-bind="css: { 'glyphicon-play': !playing(), 'glyphicon-pause': playing() }"></span></button>
+            <div class="layer-play">
+                <div id="selector" class="row btn-group">
+                    <button id="confirmed" type="button" class="btn active">Confirmed</button>
+                    <button id="probable" type="button" class="btn">Probable</button>
                 </div>
+                <button class="playbutton" data-bind="css: { active: playing }"><span class="glyphicon" data-bind="css: { 'glyphicon-play': !playing(), 'glyphicon-pause': playing() }"></span></button>
+            </div>
 
-                <div class="layer-bottom">
-                    <div class="date">
-                        <span>Week of </span>
-                        <span data-bind="text: selectedWeek"></span>
-                    </div>
-                    <div class="totalcases">
-                        <span>Total Cases </span>
-                        <span data-bind="text: totalCases"></span>
-                    </div>
+            <div class="layer-bottom">
+                <div class="date">
+                    <span>Week of </span>
+                    <span data-bind="text: selectedWeek"></span>
                 </div>
-                <div class="legend">
-                    <div id="legend" style="width:100%; height:100px">
-                    </div>
+                <div class="totalcases">
+                    <span>Total Cases </span>
+                    <span data-bind="text: totalCases"></span>
+                </div>
+            </div>
+            <div class="legend">
+                <div id="legend" style="width:100%; height:100px">
                 </div>
             </div>
         </div>

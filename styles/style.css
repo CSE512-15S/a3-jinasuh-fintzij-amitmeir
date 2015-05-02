@@ -81,7 +81,8 @@ body {
     body > .container-fluid {
         height: 100%;
         overflow-y: auto;
-        min-width: 1750px;
+        min-width: 1460px;
+        padding: 0;
     }
 
 .navbar {
@@ -140,10 +141,9 @@ body {
     float: left;
     overflow-x: hidden;
     overflow-y: hidden;
-    width: 850px;
-    margin: 10px;
-    padding-left: 20px;
-    padding-bottom: 30px;
+    width: 720px;
+    padding: 20px;
+    padding-right: 10px;
 }
 
     .sidebar > .top {
@@ -215,127 +215,123 @@ body {
  */
 
 .main {
-    padding-top: 10px;
+    margin: 20px;
+    margin-left: 0;
     float: left;
-    padding-bottom: 30px;
+    width: 700px;
+    height: 810px;
+    position: relative;
+    background-color: white;
 }
 
-    .main > .container {
-        width: 810px;
-        height: 810px;
-        background-color: white;
-        padding: 0;
-        position: relative;
+    .main > .layer {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
     }
 
-        .main > .container > .layer {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
+        .main > .layer > div > .foi {
+            padding-left: 10px;
+            font-weight: 700;
+            color: #eee;
+            font-size: 60px;
+            line-height: 1;
         }
 
-            .main > .container > .layer > div > .foi {
-                padding-left: 10px;
-                font-weight: 700;
-                color: #eee;
-                font-size: 60px;
-                line-height: 1;
-            }
+        .main > .layer > div > .district {
+            padding-left: 10px;
+            font-weight: 700;
+            color: #eee;
+            font-size: 60px;
+            line-height: 1;
+        }
 
-            .main > .container > .layer > div > .district {
-                padding-left: 10px;
-                font-weight: 700;
-                color: #eee;
-                font-size: 60px;
-                line-height: 1;
-            }
-
-            .main > .container > .layer > div > .country {
-                color: #eee;
-                font-size: 30px;
-            }
-
-            .main > .container > .layer > .population {
-                padding-left: 10px;
-                color: #ccc;
-                font-size: 18px;
-            }
-
-        .main > .container > .layer-play {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: #ccc;
+        .main > .layer > div > .country {
+            color: #eee;
             font-size: 30px;
         }
 
-            .main > .container > .layer-play > .btn-group {
-                display: block;
-            }
-
-                .main > .container > .layer-play > .btn-group > button {
-                    border: 0;
-                    border-radius: 0;
-                    box-shadow: none;
-                    width: 95px;
-                }
-
-                    .main > .container > .layer-play > .btn-group > button.active {
-                        background-color: #fb6a4a;
-                        color: white;
-                        font-weight: 700;
-                    }
-
-                    .main > .container > .layer-play > .btn-group > button:hover {
-                        box-shadow: inset 0px 3px 5px rgba(0,0,0,0.125);
-                    }
-
-            .main > .container > .layer-play > .playbutton {
-                display: block;
-                float: right;
-                font-size: 80px;
-            }
-
-
-        .main > .container > .layer-bottom {
-            position: absolute;
-            bottom: 70px;
-            left: 10px;
+        .main > .layer > .population {
+            padding-left: 10px;
             color: #ccc;
             font-size: 18px;
         }
 
-        .main > .container > .legend {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            width: 750px;
-            height: 100px;
-            fill: #ccc;
+    .main > .layer-play {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: #ccc;
+        font-size: 30px;
+    }
+
+        .main > .layer-play > .btn-group {
+            display: block;
         }
 
-        .main > .container > #map {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-            .main > .container > #map > img {
-                width: 100%;
-                opacity: 0.6;
+            .main > .layer-play > .btn-group > button {
+                border: 0;
+                border-radius: 0;
+                box-shadow: none;
+                width: 95px;
             }
 
-            .main > .container > #map > svg {
-                position: absolute;
-                top: 0;
-                left: 0;
-            }
-
-                .main > .container > #map > svg .datamaps-subunits {
-                    cursor: pointer;
+                .main > .layer-play > .btn-group > button.active {
+                    background-color: #fb6a4a;
+                    color: white;
+                    font-weight: 700;
                 }
+
+                .main > .layer-play > .btn-group > button:hover {
+                    box-shadow: inset 0px 3px 5px rgba(0,0,0,0.125);
+                }
+
+        .main > .layer-play > .playbutton {
+            display: block;
+            float: right;
+            font-size: 80px;
+        }
+
+
+    .main > .layer-bottom {
+        position: absolute;
+        bottom: 70px;
+        left: 10px;
+        color: #ccc;
+        font-size: 18px;
+    }
+
+    .main > .legend {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        width: 680px;
+        height: 100px;
+        fill: #ccc;
+    }
+
+    .main > #map {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+        .main > #map > img {
+            width: 100%;
+            opacity: 0.6;
+        }
+
+        .main > #map > svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+            .main > #map > svg .datamaps-subunits {
+                cursor: pointer;
+            }
 
 .axis path,
 .axis line {

@@ -184,10 +184,13 @@ body {
                 border-radius: 0;
                 background: none;
                 color: #aaa;
+                box-shadow: none;
             }
 
                 .sidebar > .top > .equation > .more:hover {
                     background-color: #eee;
+                    box-shadow: none;
+                    border-radius: 0;
                 }
 
     .sidebar > .bottom {

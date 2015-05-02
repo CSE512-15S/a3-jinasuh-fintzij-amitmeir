@@ -12,6 +12,7 @@ a3-jinasuh-fintzij-amitmeir
 This is an example repository for your assignment 3 submission. 
 (Put your a brief description of your final interactive visualization application and your dataset here.)
 
+For this assignment we chose to visualize the progression of the 2014 Ebola outbreak. We obtained a data set of new Ebola case counts by week and district in Westrn Africa. The raw count data tends to be quite volatile and therefore we chose to work with a clinical measure- the Force Of Infection (FOI). The force of infection is computed as the number of suseptible individuals times the number of individuals divided by the size of the population of the district. This measure is than smoothed oveer 
 
 ## Running Instructions
 

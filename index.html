@@ -58,8 +58,8 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Data</a></li>
+                    <li><a href="" data-toggle="modal" data-target="#about">About Us</a></li>
+                    <li><a href="" data-toggle="modal" data-target="#datainfo">Data References</a></li>
                 </ul>
             </div>
         </div>
@@ -123,6 +123,126 @@
             </div>
             <div class="legend">
                 <div id="legend" style="width:100%; height:100px">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- data reference modal -->
+    <div class="modal fade" id="datainfo">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Data References</h4>
+                </div>
+                <div class="modal-body">
+
+                    <h4>Ebola Dataset</h4>
+                    <ul>
+                        <li>
+                            Liberia Institute of Statistics and Geo-Information Service. (2008). Population sizes of districts in Liberia. Retrieved April 25, 2015, from
+                            <a target="_blank" href="http://www.geohive.com/cntry/liberia.aspx">http://www.geohive.com/cntry/liberia.aspx</a>
+                        </li>
+                        <li>
+                            Guinea. (2015, March 27). In Wikipedia, The Free Encyclopedia. Retrieved 22:22, May 1, 2015, from
+                            <a target="_blank" href="http://en.wikipedia.org/w/index.php?title=Guinea&oldid=653747205">
+                                http://en.wikipedia.org/w/index.php?title=Guinea&oldid=653747205
+                            </a>
+                        </li>
+                        <li>
+                            Districts of Sierra Leone. (2015, March 21). In Wikipedia, The Free Encyclopedia. Retrieved 21:41, May 1, 2015, from
+                            <a target="_blank" href="http://en.wikipedia.org/w/index.php?title=Districts_of_Sierra_Leone&oldid=652896337">http://en.wikipedia.org/w/index.php?title=Districts_of_Sierra_Leone&oldid=652896337</a>
+                            Liberia Institute of Statistics and Geo-Information Service, Liberia. (2008): Population sizes of districts in Liberia.
+                        </li>
+                        <li>
+                            World Health Organization. (2015, April 22). Data on new cases per epi week for Guinea. Retrieved April 25, 2015, from
+                            <a target="_blank" href="http://apps.who.int/gho/data/node.ebola-sitrep.ebola-country-GIN-20150422?lang=en">http://apps.who.int/gho/data/node.ebola-sitrep.ebola-country-GIN-20150422?lang=en</a>
+                        </li>
+                        <li>
+                            World Health Organization. (2015, April 22). Data on new cases per epi week for Liberia. Retrieved April 25, 2015, from
+                            <a target="_blank" href="http://apps.who.int/gho/data/node.ebola-sitrep.ebola-country-LBR-20150422?lang=en">http://apps.who.int/gho/data/node.ebola-sitrep.ebola-country-LBR-20150422?lang=en</a>
+                        </li>
+                        <li>
+                            World Health Organization. (2015, April 22). Data on new cases per epi week for Sierra Leonne. Retrieved April 25, 2015, from
+                            <a target="_blank" href="http://apps.who.int/gho/data/node.ebola-sitrep.ebola-country-SLE?lang=en">http://apps.who.int/gho/data/node.ebola-sitrep.ebola-country-SLE?lang=en</a>
+                        </li>
+                    </ul>
+
+                    <h4>Geographical Dataset</h4>
+                    <ul>
+                        <li>
+                            Data on level 1 divisions for Liberia. Retrieved April 25, 2015, from
+                            <a target="_blank" href="http://www.mapmakerdata.co.uk.s3-website-eu-west-1.amazonaws.com/library/stacks/Africa/Liberia/index.htm">
+                                http://www.mapmakerdata.co.uk.s3-website-eu-west-1.amazonaws.com/library/stacks/Africa/Liberia/index.htm
+                            </a>
+                        </li>
+                        <li>
+                            Data on level 1 divisions for Guinea. Retrieved April 25, 2015, from
+                            <a target="_blank" href="http://www.mapmakerdata.co.uk.s3-website-eu-west-1.amazonaws.com/library/stacks/Africa/Guinea/index.htm">
+                                http://www.mapmakerdata.co.uk.s3-website-eu-west-1.amazonaws.com/library/stacks/Africa/Guinea/index.htm
+                            </a>
+                        </li>
+                        <li>
+                            Data on Administrative areas for Sierra Leon. Retrieved April 25, 2015, from
+                            <a target="_blank" href="http://www.mapmakerdata.co.uk.s3-website-eu-west-1.amazonaws.com/library/stacks/Africa/Sierra%20Leone/index.htm">
+                                http://www.mapmakerdata.co.uk.s3-website-eu-west-1.amazonaws.com/library/stacks/Africa/Sierra%20Leone/index.htm
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- about modal -->
+    <div class="modal fade" id="about">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">About Us</h4>
+                </div>
+                <div class="modal-body modal-lg row">
+                    <div class="col-xs-4">
+                        <h4>Jonathan Fintzi</h4>
+                        <img src="styles/jonathan.jpeg" class="img-thumbnail" />
+                        <ul>
+                            <li>fintzij@uw.edu</li>
+                            <li>Graduate Student</li>
+                            <li>Department of Biostatistics</li>
+                            <li>University of Washington</li>
+                        </ul>
+
+                    </div>
+
+                    <div class="col-xs-4">
+                        <h4>Amit Meir</h4>
+                        <img src="styles/amit.jpg" class="img-thumbnail " />
+                        <ul>
+                            <li>amitmeir@uw.edu</li>
+                            <li>Graduate Student</li>
+                            <li>Department of Statistics</li>
+                            <li>University of Washington</li>
+                        </ul>
+                    </div>
+
+                    <div class="col-xs-4">
+                        <h4>Jina Suh</h4>
+                        <img src="styles/jina.jpg" class="img-thumbnail" />
+                        <ul>
+                            <li>jinasuh@uw.edu</li>
+                            <li>Software Developer</li>
+                            <li>Microsoft Research</li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

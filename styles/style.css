@@ -17,6 +17,7 @@ body {
     overflow-x: hidden;
     height: 100%;
     outline: none;
+    color: #777;
 }
 
     body > .container-fluid {
@@ -73,10 +74,19 @@ body {
         background-position: 50% 50%;
     }
 
-    #cover .title {
+    #cover .title1 {
+        position: absolute;
+        bottom: 280px;
+        right: 50px;
+    }
+
+    #cover .title2 {
         position: absolute;
         bottom: 200px;
         right: 50px;
+    }
+
+    #cover .title1, #cover .title2 {
         text-align: right;
         font-size: 80px;
         color: white;
@@ -185,6 +195,7 @@ body {
         height: 425px;
         margin-bottom: 10px;
         font-size: 15px;
+        color: #777;
     }
 
         .sidebar > .top > .equation {
@@ -295,14 +306,14 @@ body {
         }
 
         .main > .layer > div > .country {
-            color: #eee;
+            color: #777;
             padding-left: 10px;
             font-size: 30px;
         }
 
         .main > .layer > .population, .main > .layer > .totalcases {
             padding-left: 10px;
-            color: #ccc;
+            color: #777;
             font-size: 18px;
         }
 
@@ -310,7 +321,7 @@ body {
         position: absolute;
         top: 10px;
         right: 10px;
-        color: #ccc;
+        color: #777;
         font-size: 30px;
     }
 
@@ -347,7 +358,7 @@ body {
         position: absolute;
         bottom: 70px;
         left: 10px;
-        color: #ccc;
+        color: #777;
         font-size: 18px;
     }
 
@@ -357,7 +368,7 @@ body {
         left: 10px;
         width: 680px;
         height: 100px;
-        fill: #ccc;
+        fill: #777;
     }
 
     .main > #map {
@@ -384,12 +395,12 @@ body {
 .axis path,
 .axis line {
     fill: none;
-    stroke: #aaa;
+    stroke: #777;
     shape-rendering: crispEdges;
 }
 
 .axis text {
-    fill: #aaa;
+    fill: #777;
     font-size: 12px;
 }
 

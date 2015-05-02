@@ -170,7 +170,25 @@ body {
         padding: 20px;
         height: 425px;
         margin-bottom: 10px;
+        font-size: 15px;
     }
+
+        .sidebar > .top > .equation {
+            position: relative;
+        }
+
+            .sidebar > .top > .equation > .more {
+                position: absolute;
+                right: 0px;
+                top: 5px;
+                border-radius: 0;
+                background: none;
+                color: #aaa;
+            }
+
+                .sidebar > .top > .equation > .more:hover {
+                    background-color: #eee;
+                }
 
     .sidebar > .bottom {
         margin-top: 10px;

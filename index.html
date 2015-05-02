@@ -26,6 +26,12 @@
     <script src="libraries/d3/d3.legend.js" charset="utf-8"></script>
     <script src="libraries/datamaps/datamaps.world.js"></script>
     <script src="libraries/knockoutjs/knockout-3.3.0.js"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
 
     <!-- viz styles -->
     <link href="styles/style.css" rel="stylesheet" type="text/css">
@@ -68,7 +74,20 @@
     <div class="container-fluid">
         <div class="sidebar">
             <div class="top">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam et hendrerit eros, vitae sollicitudin arcu. Proin eget ligula eu ex ullamcorper molestie. Sed ac turpis lorem. Curabitur ex metus, rutrum nec vulputate id, malesuada ullamcorper nisl. Maecenas ex ex, volutpat ut dolor quis, hendrerit bibendum nisl. Duis felis lorem, pellentesque nec rutrum ac, pretium lacinia tortor. Integer ut commodo nunc, ut efficitur tellus. Vestibulum non elementum urna. Morbi sagittis nunc et dui ornare aliquam.
+                <p>
+                    Understanding the geographic evolution of an epidemic is essential to developing effective strategies to control the spread of disease. Visualizing the influence of infections in neighboring districts is of particular interest since insights gleaned about disease migration across administrative and national borders critically inform the development of prophylactic policies to contain the epidemic.
+                </p>
+                <p>
+                    The force of infection is a measure of the rate of disease transmission from infected individuals to susceptibles, normalized by population size. The FoI at time is
+                </p><div class="equation">
+                    $$FoI(t) \propto \frac{S_W(t) \times \left(I_W(t) + \alpha I_{ns}(t) + \gamma I_{nd}(t) \right)}{\text{District population size}}$$
+                    <button class="btn btn-default more" data-toggle="modal" data-target="#equation">
+                        <span class="glyphicon glyphicon-info-sign"></span><span> learn more</span>
+                    </button>
+                </div>
+                <p>
+                    One example of using this visualization would be to explore whether the cases in neighboring districts exert infection pressure on susceptible individuals in a given district. We can investigate this by moving the time slider to the time just prior to the first recorded in a district, noting that the force of infection is non-zero for all but the earliest districts where infections were recorded. This reflects the contribution to the force of infection from cases in neighboring districts. We can also investigate the co-occurrence of epidemic outbreaks in a cluster of districts by selecting the districts and examining the map and plots of case counts for spatial and temporal patterns.
+                </p>
             </div>
             <div class="bottom">
                 <div id="lineChart">
@@ -242,6 +261,43 @@
                         </ul>
 
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- equation modal -->
+    <div class="modal fade" id="equation">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Force of Infection Equation</h4>
+                </div>
+                <div class="modal-body modal-lg row">
+                    <div class="equation">
+                        $$FoI(t) \propto \frac{S_W(t) \times \left(I_W(t) + \alpha I_{ns}(t) + \gamma I_{nd}(t) \right)}{\text{District population size}}$$
+                    </div>
+                    <ul>
+                        <li>
+                            $S_W(t)$ is the number of susceptible individuals within a district
+                        </li>
+                        <li>
+                            $I_W(t)$ is the number of infected individuals within a district
+                        </li>
+                        <li>
+                            $I_{ns}(t)$ is the number infected in neighboring districts in the same country
+                        </li>
+                        <li>
+                            $I_{nd}(t)$ is the number infected in neighboring districts in different countries
+                        </li>
+                        <li>
+                            $\alpha$ and $\gamma$ are parameters that down weight the contribution of infected counts in neighboring districts to the FoI.
+                        </li>
+                    </ul>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

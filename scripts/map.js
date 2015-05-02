@@ -93,9 +93,15 @@
             },
             fillFunc: function (datum) {
                 var foi = data.getFOI(datum);
-                var key = data.foiFillScale(foi);
 
-                return data.colorScheme[key];
+                if (foi == 0) {
+                    return "#eee";
+                }
+                else {
+                    var key = data.foiFillScale(foi);
+
+                    return data.colorScheme[key];
+                }
             },
             data: {
             }  //empty data has to be included here cause of some issue MarkDiMarkoh  mentioned in our GitHub conversation

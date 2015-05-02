@@ -53,6 +53,7 @@
     var xAxis = d3.svg.axis()
         .scale(x)
         .ticks(5)
+        .tickFormat(d3.time.format("%B %y"))
         .orient("bottom");
 
     var yAxis = d3.svg.axis()

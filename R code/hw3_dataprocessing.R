@@ -28,7 +28,6 @@ require(snowfall)
 # write csv
 eboladat <- read.csv("EbolaData_corrected.csv", header = TRUE, stringsAsFactors = FALSE)
 
-
 # process the adjacency matrix
 adjmat <- read.csv("ebolaadjacency.csv", header = TRUE, stringsAsFactors = TRUE)
 rownames(adjmat) <- adjmat[,1]; adjmat <- adjmat[,-1] # first column contains row names. set it and remove the column. 
@@ -92,7 +91,7 @@ final_data$District_ID <- sapply(final_data$District,function(str) gsub("'","",s
 names(final_data)[2] <- "District_Name"
 
 #Adding Week_ID
-final_data$WeekID <- sapply(final_data$Week,function(str) which(weeks==str))
+final_data$WeekID <- sapply(final_data$Week,function(str) which(weeks==str))-1
 
 #log transforming foi
 final_data[,6:7] <- apply(final_data[,6:7],2,function(x) log(x+1))
@@ -112,5 +111,14 @@ final_data <- cbind(final_data,probable_cumulative=probableCumSum,confirmed_cumu
 names(final_data)[8] <- "DistrictID"
 names(final_data)[7] <- "ProbableFOI"
 names(final_data)[6] <- "ConfirmedFOI"
+names(final_data)[10] <- "ProbableCumulative"
+names(final_data)[11] <- "ConfirmedCumulative"
+names(final_data)[2] <- "DistrictName"
+
+#Adding population sizes to each row
+#checking match between popdat names and final_data names
+sum(sapply(popdat[,1],function(str) str %in% final_data$District_Name))
+final_data$PopulationSize <- sapply(final_data$DistrictName,function(str) popdat[which(str==popdat[,1]),3])
+
 
 write.csv(final_data, file = "EbolaDataFoi.csv")

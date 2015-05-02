@@ -258,6 +258,7 @@ function loadData() {
                 sharedData.selectedParams.type = newType;
                 mapViz.updateChropleth();
                 lineViz.update();
+                lineViz.updateSelectedWeek();
             }
         });
 

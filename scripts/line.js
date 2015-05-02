@@ -119,7 +119,8 @@
                 name: name,
                 values: data.districtData.get(name).map(function (datum) {
                     return { date: datum.date, count: +data.getCount(datum) };
-                })
+                }),
+                confirmed: data.showConfirmed()
             };
         });
 
@@ -157,7 +158,7 @@
         // Join new data with old elements, if any.
         var district = svg.selectAll(".district")
             .data(districts, function (d) {
-                return d.name;
+                return d.name + d.confirmed;
             });
 
         // UPDATE

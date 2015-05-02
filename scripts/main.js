@@ -1,8 +1,9 @@
 ﻿var mapViz = viz.ebolaMap("map");
+var mapLegend = viz.legend("legend");
 var lineViz = viz.caseChart("lineChart");
 
 var sharedData = {
-    colorScheme: colorbrewer.Reds[9],
+    colorScheme: colorbrewer.Reds[7],
     weeklyMapData: {},
     weeklyBubbleData: {},
     districtData: {},
@@ -156,7 +157,7 @@ function loadData() {
         var foiExtent = [0, 7];
         sharedData.foiFillScale = d3.scale.quantize()
            .domain(foiExtent)
-           .range(d3.range(9).map(function (i) { return i; }));
+           .range(d3.range(7).map(function (i) { return i; }));
 
         // Group data by WeekID and DistrictID
         var nestedData = d3.nest()
@@ -207,9 +208,11 @@ function loadData() {
     function initializeMap() {
         // Set the data on the map
         mapViz.data(sharedData);
+        mapLegend.data(sharedData);
 
         // Update the map with the data
         mapViz.update();
+        mapLegend.update();
     }
 
     function initializeChart() {

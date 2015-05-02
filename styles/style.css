@@ -301,10 +301,19 @@ body {
 
         .main > .container > .layer-bottom {
             position: absolute;
-            bottom: 50px;
+            bottom: 70px;
             left: 10px;
             color: #ccc;
             font-size: 18px;
+        }
+
+        .main > .container > .legend {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 750px;
+            height: 100px;
+            fill: #ccc;
         }
 
         .main > .container > #map {

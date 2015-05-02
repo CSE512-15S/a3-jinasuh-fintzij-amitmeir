@@ -10,7 +10,6 @@ html {
 
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
-    padding-top: 50px;
     font-family: 'Open Sans', 'Segoe UI', Helvetica, Verdana, Arial, sans-serif;
     font-weight: 300;
     background-color: #eee;
@@ -20,17 +19,32 @@ body {
     outline: none;
 }
 
-    body.modal-open {
-        padding: 0;
-    }
-
     body > .container-fluid {
-        height: 100%;
+        height: calc(100% - 50px);
         overflow-y: auto;
         min-width: 1460px;
         padding: 0;
+        padding-top: 50px;
     }
 
+.modal-header {
+    background: #333;
+    color: white;
+}
+
+    .modal-header > .close {
+        color: white;
+        font-size: 30px;
+    }
+
+    .modal-header > .modal-title {
+        font-size: 20px;
+        text-transform: uppercase;
+    }
+
+.modal-body {
+    margin: 0;
+}
 
 #cover > .modal-dialog, #cover > .modal-dialog > .modal-content {
     height: 100%;
@@ -406,4 +420,43 @@ body {
 
 #about img {
     width: 100%;
+}
+
+#about .img-thumbnail {
+    border-radius: 0;
+}
+
+#about .modal-body {
+    text-align: center;
+}
+
+#about .bio {
+    padding: 15px;
+}
+
+    #about .bio > li {
+        font-size: 16px;
+        padding: 5px;
+    }
+
+
+.modal-body {
+    font-size: 16px;
+}
+
+.modal-footer > button {
+    border-radius: 0;
+    background: none;
+    color: #aaa;
+    box-shadow: none;
+}
+
+    .modal-footer > button:hover {
+        background-color: #eee;
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+.list-unstyled > li {
+    padding: 10px;
 }

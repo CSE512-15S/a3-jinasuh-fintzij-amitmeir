@@ -17,7 +17,7 @@
     chart.dispatch = dispatch;
 
     containerId = "#" + containerId;
-    var margin = { top: 20, right: 20, bottom: 50, left: 50 };
+    var margin = { top: 20, right: 20, bottom: 60, left: 50 };
 
     var width = $(containerId).width() - margin.left - margin.right;
     var height = $(containerId).height() - margin.top - margin.bottom;

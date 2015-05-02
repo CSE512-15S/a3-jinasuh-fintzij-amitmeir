@@ -99,8 +99,8 @@ final_data[,6:7] <- apply(final_data[,6:7],2,function(x) log(x+1))
 #Adding comulative sum of cases
 probableCumSum <- numeric(nrow(final_data))
 confirmedCumSum <- numeric(nrow(final_data))
-for(district in unique(final_data$District)) {
-  districtIndex <- which(final_data$District==district)
+for(district in unique(final_data$DistrictID)) {
+  districtIndex <- which(final_data$DistrictID==district)
   probableCumSum[districtIndex] <- cumsum(final_data$Probable[districtIndex])
   confirmedCumSum[districtIndex] <- cumsum(final_data$Confirmed[districtIndex])
 }

@@ -4,29 +4,30 @@ library(doParallel)
 require(snowfall)
 
 # reshape data to long format
-eboladat <- read.csv("eboladata_raw.csv", header = TRUE, stringsAsFactors = FALSE)
-eboladat[is.na(eboladat)] <- 0 # replace missing values with zero counts
+#eboladat <- read.csv("EbolaData_corrected.csv", header = TRUE, stringsAsFactors = FALSE)
+#eboladat[is.na(eboladat)] <- 0 # replace missing values with zero counts
 
 # melt, then relable variables
-eboladat <- melt(eboladat, id.vars <- c("Country", "Location", "Ebola.data.source", "Indicator.type", "Case.definition"))
-names(eboladat)[2:7] <- c("District", "Data source", "Indicator type", "Case_Type", "Week", "Count")
+#eboladat <- melt(eboladat, id.vars <- c("Country", "Location", "Ebola.data.source", "Indicator.type", "Case.definition"))
+#names(eboladat)[2:7] <- c("District", "Data source", "Indicator type", "Case_Type", "Week", "Count")
 
-# correct coding for dates
-eboladat$Week <- substring(eboladat$Week, 2)
-eboladat$Week <- as.Date(eboladat$Week, format = "%m.%d.%Y")
-
-# remove patient database
-eboladat <- eboladat[eboladat[,3] != " Situation report", ]
-
-eboladat <- eboladat[,-c(3,4)]
-#Turning probable into proable + count
-for(i in seq(from=2,to=nrow(eboladat),by=2)) {
-  eboladat$Count[i] <- eboladat$Count[i] + eboladat$Count[i-1]
-}
+# # correct coding for dates
+# eboladat$Week <- substring(eboladat$Week, 2)
+# eboladat$Week <- as.Date(eboladat$Week, format = "%m.%d.%Y")
+# 
+# # remove patient database
+# eboladat <- eboladat[eboladat[,3] != " Situation report", ]
+# 
+# eboladat <- eboladat[,-c(3,4)]
+# #Turning probable into proable + count
+# for(i in seq(from=2,to=nrow(eboladat),by=2)) {
+#   eboladat$Count[i] <- eboladat$Count[i] + eboladat$Count[i-1]
+# }
 
 # 
-# # write csv
-write.csv(eboladat, file = "EbolaData.csv")
+# write csv
+eboladat <- read.csv("EbolaData_corrected.csv", header = TRUE, stringsAsFactors = FALSE)
+
 
 # process the adjacency matrix
 adjmat <- read.csv("ebolaadjacency.csv", header = TRUE, stringsAsFactors = TRUE)
@@ -67,20 +68,14 @@ sfStop()
 #backup
 #save(foi_mat,file="foi matrix full.Robj")
 
-##Creating final data set
-foi_mat <- data.frame(foi_mat)
-#assigning names to foi_mat columns
-for(i in 1:ncol(foi_mat)) {
-  param <- param_combns[i,]
-  names(foi_mat)[i] <- paste(sep="","inf",param[1],"sprob",param[2],"nd",param[3],"nc",param[4])
-}
-
 #separating confirmed and probable in ebola dat set 
+eboladat <- eboladat[,-1]
 confirmed.index <- which(eboladat$Case_Type==" Confirmed")
 probable.index <- which(eboladat$Case_Type==" Probable")
 data.confirmed <- eboladat[confirmed.index,5]
 eboladat <- cbind(eboladat[probable.index,],data.confirmed)
 names(eboladat)[5:6] <- c("Probable","Confirmed")
+eboladat <- eboladat[,-3]
 
 #seperating confirmed and probable in foi
 confirmed.foi <- foi_mat[confirmed.index,]
@@ -96,7 +91,7 @@ final_data$District <- sapply(final_data$District,function(str) gsub(" ","",str)
 final_data$District <- sapply(final_data$District,function(str) gsub("'","",str))
 
 #log transforming foi
-final_data[,7:ncol(final_data)] <- apply(final_data[,7:ncol(final_data)],2,function(x) log(x+1))
+final_data[,6:ncol(final_data)] <- apply(final_data[,6:ncol(final_data)],2,function(x) log(x+1))
 
 #Adding comulative sum of cases
 probableCumSum <- numeric(nrow(final_data))
@@ -109,5 +104,4 @@ for(district in unique(final_data$District)) {
 
 final_data <- cbind(final_data,probable_cumulative=probableCumSum,confirmed_cumulative=confirmedCumSum)
 
-#Adding counts normalized by district population
-#First, correct district names in popdat file
+write.csv(final_data, file = "EbolaDataFoi.csv")

@@ -272,7 +272,7 @@ body {
             font-size: 30px;
         }
 
-        .main > .layer > .population {
+        .main > .layer > .population , .main > .layer > .totalcases {
             padding-left: 10px;
             color: #ccc;
             font-size: 18px;

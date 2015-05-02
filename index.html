@@ -98,6 +98,10 @@
                     <span>Population Size: </span>
                     <span data-bind="text: hoveredDistrictPopulationSize"></span>
                 </div>
+                <div class="totalcases" data-bind="visible: hoveredDistrictName">
+                    <span>Total Cases: </span>
+                    <span data-bind="text: hoveredTotalCases"></span>
+                </div>
             </div>
             <div class="layer" id="map">
                 <!--<img src="data/background.png" />-->
@@ -115,10 +119,6 @@
                 <div class="date">
                     <span>Week of </span>
                     <span data-bind="text: selectedWeek"></span>
-                </div>
-                <div class="totalcases">
-                    <span>Total Cases </span>
-                    <span data-bind="text: totalCases"></span>
                 </div>
             </div>
             <div class="legend">

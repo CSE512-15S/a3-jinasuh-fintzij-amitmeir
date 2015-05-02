@@ -36,12 +36,20 @@ var sharedData = {
             return datum.ProbableFOI;
         }
     },
+    getTotalCount: function (datum) {
+        if (sharedData.showConfirmed()) {
+            return datum.ConfirmedCumulative;
+        }
+        else {
+            return datum.ProbableCumulative;
+        }
+    },
     hoveredDistrict: ko.observable(),
     hoveredDistrictName: ko.observable(),
     hoveredCountryName: ko.observable(),
     hoveredDistrictPopulationSize: ko.observable(),
+    hoveredTotalCases: ko.observable(),
     selectedWeek: ko.observable(),
-    totalCases: ko.observable(),
     hoveredDistrictFoi: ko.observable(),
     playing: ko.observable(false),
     colors: d3.scale.category10(),
@@ -100,16 +108,17 @@ function onDistrictHovered() {
     if (hoveredDistrictId) {
         var districtData = sharedData.districtData.get(hoveredDistrictId);
         var dataPoint = districtData[sharedData.selectedParams.weekID];
-        sharedData.hoveredDistrictName("x" + dataPoint.DistrictID); // dataPoint.DistrictID
+        sharedData.hoveredDistrictName(dataPoint.DistrictName);
         sharedData.hoveredCountryName(dataPoint.Country);
-        sharedData.hoveredDistrictPopulationSize("todo123"); // dataPoint.PopulationSize
+        sharedData.hoveredDistrictPopulationSize(dataPoint.PopulationSize);
+        sharedData.hoveredTotalCases(sharedData.getTotalCount(dataPoint));
         sharedData.hoveredDistrictFoi(sharedData.getFOI(dataPoint));
 
     }
     else {
-        sharedData.hoveredDistrictName(""); // dataPoint.DistrictID
+        sharedData.hoveredDistrictName("");
         sharedData.hoveredCountryName("");
-        sharedData.hoveredDistrictPopulationSize(0); // dataPoint.PopulationSize
+        sharedData.hoveredDistrictPopulationSize(0);
         sharedData.hoveredDistrictFoi(0);
     }
 
@@ -289,8 +298,11 @@ function loadData() {
                 sharedData.selectedParams.weekID = week;
                 mapViz.update();
                 lineViz.updateSelectedWeek();
-                sharedData.selectedWeek(sharedData.dateIndices[week])
-                sharedData.totalCases("x123");
+                var date = sharedData.dateIndices[week];
+                var year = date.getUTCFullYear();
+                var month = date.getUTCMonth() + 1;
+                var day = date.getUTCDate();
+                sharedData.selectedWeek(month + "/" + day + "/" + year);
             }
             return week;
         }

@@ -349,10 +349,8 @@ body {
 }
 
 .axis text {
-    stroke: #aaa;
-    font-weight: 300;
+    fill: #aaa;
     font-size: 12px;
-    font-family: 'Open Sans', 'Segoe UI', Helvetica, Verdana, Arial, sans-serif;
 }
 
 .x.axis path {

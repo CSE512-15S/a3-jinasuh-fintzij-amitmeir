@@ -16,15 +16,14 @@
                 highlightBorderColor: '#333',
                 highlightBorderWidth: 0.5,
                 highlightFillColor: 'rgba(0,0,0,0.1)',
-                popupOnHover: false,
-                //popupTemplate: function (geography, data) {
-                //    var popup = '<div class="hoverinfo"> <strong> District: ' + geography.properties.ID + ' </strong> Country: ' + geography.properties.COUNTRY;
-                //    if (data) {
-                //        popup = popup + '+++' + data.ConfirmedCount + '</div>';
-                //    }
+                popupOnHover: true,
+                popupTemplate: function (geography, datum) {
+                    var popup = '<div class="hoverinfo"> <strong> District: </strong>' + geography.properties.CAPTION
+                        + '</div><div class="hoverinfo"> <strong> Log(1+FOI): </strong>' + data.getFOI(datum)
+                        + '</div><div class="hoverinfo"><strong>New Case Count: </strong>' + data.getCount(datum) + '</div>';
 
-                //    return popup;
-                //},
+                    return popup;
+                },
                 onClick: function (geography, datum) {
                     datum.selected = !datum.selected;
                     var color;

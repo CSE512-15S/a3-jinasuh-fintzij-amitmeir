@@ -471,3 +471,13 @@ body {
 .list-unstyled > li {
     padding: 10px;
 }
+
+div.hoverinfo {
+    font-family: 'Open Sans', 'Segoe UI', Helvetica, Verdana, Arial, sans-serif;
+    font-size: 10px;
+    background: white;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 2px;
+}

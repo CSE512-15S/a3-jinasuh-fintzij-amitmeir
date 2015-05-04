@@ -5,7 +5,7 @@ var lineViz = viz.caseChart("lineChart");
 var sharedData = {
     colorScheme: colorbrewer.Reds[7],
     weeklyMapData: {},
-    weeklyBubbleData: {},
+    //weeklyBubbleData: {},
     districtData: {},
     selectedDistricts: ko.observableArray(),
     selectedData: {},
@@ -190,20 +190,14 @@ function loadData() {
         // DataMap Bubble requires a data array
         nestedData.forEach(function (d) {
             var newVals = {};
-            var bubbleArray = [];
+            //var bubbleArray = [];
 
             d.values.forEach(function (v) {
                 newVals[v.district] = v.data;
-
-                // JINA HACK -- Only Liberia geo is available for now
-                if (v.data.Country == "Liberia") {
-                    v.data.centered = v.district;
-                    bubbleArray.push(v.data);
-                }
             });
 
             sharedData.weeklyMapData[d.group] = newVals;
-            sharedData.weeklyBubbleData[d.group] = bubbleArray;
+            //sharedData.weeklyBubbleData[d.group] = bubbleArray;
         });
 
         // Nest by DistrictID

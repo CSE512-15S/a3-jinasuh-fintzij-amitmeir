@@ -423,9 +423,10 @@ body {
     pointer-events: all;
 }
 
-.focus {
-    /*fill: none;
-    stroke: steelblue;*/
+.focus text {
+    font-family: 'Open Sans', 'Segoe UI', Helvetica, Verdana, Arial, sans-serif;
+    font-size:10px;
+    fill: #777;
 }
 
 

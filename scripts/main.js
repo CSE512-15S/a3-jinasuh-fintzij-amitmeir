@@ -16,7 +16,7 @@ var sharedData = {
     foiFillScale: function (datum) { return 0; },
     selectedParams: {
         weekID: 0,
-        type: 0, // confirmed=0 or probable=1
+        type: 1, // confirmed=0 or probable=1
         showCount: false,
     },
     showConfirmed: function () { return sharedData.selectedParams.type == 0; },

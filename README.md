@@ -11,6 +11,8 @@ a3-jinasuh-fintzij-amitmeir
 
 Understanding the geographic evolution of an epidemic is essential to developing effective strategies to control the spread of disease. Visualizing the influence of infections in neighboring districts is of particular interest since insights gleaned about disease migration across administrative and national borders critically inform the development of prophylactic policies to contain the epidemic. 
 
+$$x^2$$
+
 The force of infection (FoI) is a measure of the rate of disease transmission from infected individuals to susceptibles, normalized by population size. The FoI at time t can be understood as 
 
 FoI(t)∝  (S_w (t)×(I_w (t)+ 〖α×I〗_ns (t)+γ×I_nd (t)))/(District population size)
@@ -22,7 +24,7 @@ The map displays weekly snapshots of the FoI for each district in Sierra Leone, 
 One example of using this visualization would be to explore whether the cases in neighboring districts exert infection pressure on susceptible individuals in a given district. We can investigate this by moving the time slider to the time just prior to the first recorded in a district, noting that the force of infection is non-zero for all but the earliest districts where infections were recorded. This reflects the contribution to the force of infection from cases in neighboring districts. We can also identify clusters of districts that are highly correlated by playing through the epidemic and looking for clusters of districts that light up concurrently
 
 ## Running Instructions
-Easy!
+Start and pause the animation of the epidemic using either play button on the top right or bottom left corner. One or several districts may be selected in order to display the time series of new case counts. The slider underneath the time series graph can be used to move forward or backward in time. 
 http://cse512-15s.github.io/a3-jinasuh-fintzij-amitmeir/
 
 ## Story Board

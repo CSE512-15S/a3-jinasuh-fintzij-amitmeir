@@ -30,23 +30,6 @@
     var y = d3.scale.linear()
         .range([height, 0]);
 
-    //var color = d3.scale.category10();
-    //var colorQueue = d3.range(0, 10, 1).map(function (i) { return color(i); });
-    //var colorMap = d3.map();
-    //var getColor = function (districtName) {
-    //    var districtColor = colorMap.get(districtName);
-    //    if (!districtColor) {
-    //        if (colorQueue.length == 0) {
-    //            colorQueue.push.apply(colorQueue, d3.range(0, 10, 1).map(function (i) { return color(i); }));
-    //        }
-
-    //        districtColor = colorQueue.pop();
-    //        colorMap.set(districtName, districtColor);
-    //    }
-
-    //    return districtColor;
-    //}
-
     var xAxis = d3.svg.axis()
         .scale(x)
         .ticks(5)
@@ -58,7 +41,6 @@
         .orient("left");
 
     var line = d3.svg.line()
-        //.interpolate("basis") // TODO JINA: Do we want to interpolate??
         .x(function (d) {
             return x(d.date);
         })
@@ -102,7 +84,8 @@
 
             svg.selectAll(".focus")
                 .data(districts, function (d) { return d.name; })
-            .attr("transform", function (d) { return "translate(" + x(d.values[di].date) + "," + y(d.values[di].count) + ")"; });
+                .attr("transform", function (d) { return "translate(" + x(d.values[di].date) + "," + y(d.values[di].count) + ")"; })
+                .select("text").text(function (d) { return d.values[di].count; });
         }
     }
 
@@ -121,15 +104,6 @@
                 confirmed: data.showConfirmed()
             };
         });
-
-        //// Return color for unselected districts
-        //colorMap.forEach(function (key, value) {
-        //    if (data.selectedDistricts().indexOf(key) < 0) {
-        //        colorMap.remove(key);
-        //        colorQueue.unshift(value);
-        //    }
-        //})
-
 
         x.domain(data.dateExtent);
 
@@ -174,18 +148,17 @@
         .attr("d", function (d) { return line(d.values); })
         .style("stroke", function (d) { return data.getColor(d.name); });
 
-        //var text = newElements.append("text")
-        //.datum(function (d) { return { name: d.name, value: d.values[d.values.length - 1] }; })
-        //.attr("transform", function (d) { return "translate(" + x(d.value.date) + "," + y(d.value.count) + ")"; })
-        //.attr("x", 3)
-        //.attr("dy", ".35em")
-        //.text(function (d) { return d.name; });
-
-        var focusCircle = newElements.append("circle")
+        var focusGroup = newElements.append("g")
             .attr("class", "focus")
-            .attr("r", 3)
-            .style("fill", function (d) { return data.getColor(d.name); })
             .style("display", "none");
+
+        focusGroup.append("circle")
+            .attr("r", 3)
+            .style("fill", function (d) { return data.getColor(d.name); });
+
+        focusGroup.append("text")
+            .attr("x", 9)
+            .attr("dy", ".35em");
 
         var selectedCircle = newElements.append("circle")
             .attr("class", "selected")
@@ -202,12 +175,6 @@
         district.selectAll(".line")
             .attr("d", function (d) { return line(d.values); })
             .style("stroke", function (d) { return data.getColor(d.name); });
-
-        district.selectAll("text")
-            .attr("transform", function (d) { return "translate(" + x(d.value.date) + "," + y(d.value.count) + ")"; })
-            .attr("x", 3)
-            .attr("dy", ".35em")
-            .text(function (d) { return d.name; });
 
         // EXIT
         // Remove old elements as needed.

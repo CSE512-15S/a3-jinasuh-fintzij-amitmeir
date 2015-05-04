@@ -11,8 +11,6 @@ a3-jinasuh-fintzij-amitmeir
 
 Understanding the geographic evolution of an epidemic is essential to developing effective strategies to control the spread of disease. Visualizing the influence of infections in neighboring districts is of particular interest since insights gleaned about disease migration across administrative and national borders critically inform the development of prophylactic policies to contain the epidemic. 
 
-$$x^2$$
-
 The force of infection (FoI) is a measure of the rate of disease transmission from infected individuals to susceptibles, normalized by population size. The FoI at time t can be understood as 
 
 FoI(t)∝  (S_w (t)×(I_w (t)+ 〖α×I〗_ns (t)+γ×I_nd (t)))/(District population size)

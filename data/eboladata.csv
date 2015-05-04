@@ -1,4 +1,4 @@
-,Country,DistrictName,Week,Probable,Confirmed,ProbableFOI,ConfirmedFOI,DistrictID,WeekID,ProbableComulative,ConfirmedComulative,PopulationSize
+,Country,DistrictName,Week,Probable,Confirmed,ProbableFOI,ConfirmedFOI,DistrictID,WeekID,ProbableCumulative,ConfirmedCumulative,PopulationSize
 2,Guinea,BEYLA,12/30/13,0,0,0,0,BEYLA,0,0,0,325482
 4,Guinea,BOFFA,12/30/13,0,0,0,0,BOFFA,0,0,0,211063
 6,Guinea,BOKE,12/30/13,0,0,0,0,BOKE,0,0,0,449405

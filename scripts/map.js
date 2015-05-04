@@ -18,7 +18,7 @@
                 popupOnHover: true,
                 popupTemplate: function (geography, datum) {
                     var popup = '<div class="hoverinfo"> <strong> District: </strong>' + geography.properties.CAPTION
-                        + '</div><div class="hoverinfo"> <strong> Log(1+FOI): </strong>' + data.getFOI(datum)
+                        + '</div><div class="hoverinfo"> <strong> Log(1+FOI): </strong>' + (+data.getFOI(datum)).toFixed(2)
                         + '</div><div class="hoverinfo"><strong>New Case Count: </strong>' + data.getCount(datum) + '</div>';
 
                     return popup;

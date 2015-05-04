@@ -50,7 +50,7 @@ names(eboladat)[5:6] <- c("Probable","Confirmed")
 eboladat <- eboladat[,-3]
 
 #Computing FOI
-FOI <- new.comp.foi(eboladat,popdat,adjmat,districtWeight=0.015,countryWeight=0.0075)
+system.time(FOI <- new.comp.foi(eboladat,popdat,adjmat,districtWeight=0.015,countryWeight=0.0075))
 
 #seperating confirmed and probable in foi
 final_data <- cbind(eboladat,log(FOI+1))

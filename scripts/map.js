@@ -1,8 +1,7 @@
 ﻿viz.ebolaMap = function (containerId) {
 
     var currentMap = {},
-	 	data = {},
-        dispatch = d3.dispatch("clickdata", "mouseoverdata", "mouseoutdata", "dragthreshold", "dragaxis");
+	 	data = {};
 
     var datamap = new Datamap(
         {
@@ -117,8 +116,6 @@
         data = _;
         return currentMap;
     };
-
-    currentMap.dispatch = dispatch;
 
     currentMap.update = function () {
         currentMap.updateChropleth();

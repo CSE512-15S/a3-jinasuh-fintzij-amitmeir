@@ -4,7 +4,7 @@ a3-jinasuh-fintzij-amitmeir
 ## Team Members
 
 1. Jina Suh jinasuh@uw.edu
-2. John Fintzi fintzij@uw.edu
+2. Jonathan Fintzi fintzij@uw.edu
 3. Amit meir amitmeir@uw.edu
 
 ## 2014 Ebola Outbreak in West Africa

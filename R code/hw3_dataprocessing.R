@@ -40,33 +40,6 @@ write.csv(adjmat, file = "adjmat.csv")
 # load the population size matrix
 popdat <- read.csv("popdata.csv", header=TRUE, stringsAsFactors = FALSE)
 
-# Create dataset ----------------------------------------------------------
-
-require(snowfall)
-computation.wrapper <- function(config,dat,popdat,adjmat) {
-  infectivity <- config[[1]]
-  samp_prob <- config[[2]]
-  neighbor_district <- config[[3]]
-  neighbor_country <- config[[4]]
-  
-  results <- comp_foi(dat = eboladat, popdat = popdat, adjmat = adjmat, infectivity, samp_prob, neighbor_district, neighbor_country)
-}
-
-infectivity_seq <- 1
-samp_prob <- 1
-neighbor_district <- 0.05
-neighbor_country <- 0.05
-
-param_combns <- expand.grid(infectivity_seq, samp_prob, neighbor_district, neighbor_country)
-
-#sfInit(paralle=TRUE,cpus=3)
-#sfSource("ebola functions.R")
-foi_mat <- apply(param_combns,1,computation.wrapper,dat=eboladat,popdat=popdat,adjmat=adjmat)
-#sfStop()
-
-#backup
-#save(foi_mat,file="foi matrix full.Robj")
-
 #separating confirmed and probable in ebola dat set 
 eboladat <- eboladat[,-1]
 confirmed.index <- which(eboladat$Case_Type==" Confirmed")
@@ -76,25 +49,19 @@ eboladat <- cbind(eboladat[probable.index,],data.confirmed)
 names(eboladat)[5:6] <- c("Probable","Confirmed")
 eboladat <- eboladat[,-3]
 
+#Computing FOI
+FOI <- new.comp.foi(eboladat,popdat,adjmat,districtWeight=0.015,countryWeight=0.0075)
+
 #seperating confirmed and probable in foi
-confirmed.foi <- foi_mat[confirmed.index,]
-probable.foi <- foi_mat[probable.index,]
-names(confirmed.foi) <- paste(names(confirmed.foi),"confirmed",sep="")
-names(probable.foi) <- paste(names(probable.foi),"probable",sep="")
-foi_mat <- cbind(confirmed.foi,probable.foi)
-rm(confirmed.foi,probable.foi)
-final_data <- cbind(eboladat,foi_mat)
+final_data <- cbind(eboladat,log(FOI+1))
 
 #Deleting spaces and apostrophies
 final_data$DistrictID <- sapply(final_data$District,function(str) gsub(" ","",str))
 final_data$DistrictID <- sapply(final_data$DistrictID,function(str) gsub("'","",str))
-names(final_data)[2] <- "District_Name"
+names(final_data)[2] <- "DistrictName"
 
 #Adding Week_ID
 final_data$WeekID <- sapply(final_data$Week,function(str) which(weeks==str))-1
-
-#log transforming foi
-final_data[,6:7] <- apply(final_data[,6:7],2,function(x) log(x+1))
 
 #Adding comulative sum of cases
 probableCumSum <- numeric(nrow(final_data))
@@ -105,22 +72,14 @@ for(district in unique(final_data$DistrictID)) {
   confirmedCumSum[districtIndex] <- cumsum(final_data$Confirmed[districtIndex])
 }
 
-final_data <- cbind(final_data,probable_cumulative=probableCumSum,confirmed_cumulative=confirmedCumSum)
-
-#Chaging variables names to fit web implementation
-names(final_data)[8] <- "DistrictID"
-names(final_data)[7] <- "ProbableFOI"
-names(final_data)[6] <- "ConfirmedFOI"
-names(final_data)[10] <- "ProbableCumulative"
-names(final_data)[11] <- "ConfirmedCumulative"
-names(final_data)[2] <- "DistrictName"
+final_data <- cbind(final_data,ProbableComulative=probableCumSum,ConfirmedComulative=confirmedCumSum)
 
 #Adding population sizes to each row
 #checking match between popdat names and final_data names
-sum(sapply(popdat[,1],function(str) str %in% final_data$District_Name))
+sum(sapply(popdat[,1],function(str) str %in% final_data$DistrictName))
 final_data$PopulationSize <- sapply(final_data$DistrictName,function(str) popdat[which(str==popdat[,1]),3])
 
-write.csv(final_data, file = "EbolaDataFoi.csv")
+write.csv(final_data, file = "EbolaDataFoiCorrect.csv")
 
 
 # Global View Data Set ------------------------------

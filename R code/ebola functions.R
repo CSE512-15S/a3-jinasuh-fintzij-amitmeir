@@ -33,7 +33,7 @@ dist_country_table <- function(dat){
 ## output: 
 # - foi: vector containing the force of infection for each record for that week
 
-comp_foi <- function(dat, popdat, adjmat, infectivity, samp_prob, neighbor_district, neighbor_country){
+comp_foi <- function(dat, popdat, adjmat, infectivity, neighbour_district=0.05, neighbour_country=0.02){
   
   # initialize foi
   
@@ -110,3 +110,80 @@ comp_foi <- function(dat, popdat, adjmat, infectivity, samp_prob, neighbor_distr
   return(foi)
   
 }
+
+new.comp.foi <- function(data,popdat,adjmat,districtWeight=0.015,countryWeight=0.0075) {
+  #Sorting according to week
+  monthDayYear <- sapply(data$Week,strsplit,split="/")
+  monthDayYear <- lapply(monthDayYear,function(x) as.numeric(x))
+  monthDayYear <- do.call("rbind",monthDayYear)
+  data <- data[order(monthDayYear[,3],monthDayYear[,1],monthDayYear[,2]),]
+  
+  #Standartizing district names
+#   data$District <- sapply(data$District,function(str) gsub(str," ",""))
+#   data$District <- sapply(data$District,function(str) gsub(str,"'",""))
+  names(adjmat) <- rownames(adjmat)
+  
+  #Computing infected
+  ProbableInfected <- numeric(nrow(data))
+  ConfirmedInfected <- numeric(nrow(data))
+  for(district in unique(data$District)) {
+    district.index <- which(data$District==district)
+    probable <- data$Probable[district.index]
+    confirmed <- data$Confirmed[district.index]
+    ProbableInfected[district.index] <- sapply(1:length(probable),function(i) sum(probable[i:(max(i-2,1))]))
+    ConfirmedInfected[district.index] <- sapply(1:length(confirmed),function(i) sum(confirmed[i:(max(i-2,1))]))
+  }
+  
+  #Computing susceptible 
+  ProbableSusceptible <- numeric(nrow(data))
+  ConfirmedSusceptible <- numeric(nrow(data))
+  for(district in unique(data$District)) {
+    district.index <- which(data$District==district)
+    population <- popdat[which(popdat[,1]==district),3]
+    probable <- cumsum(data$Probable[district.index])
+    confirmed <- cumsum(data$Confirmed[district.index])
+    ProbableSusceptible[district.index] <- sapply(1:length(probable),function(i) population - probable[i])
+    ConfirmedSusceptible[district.index] <- sapply(1:length(confirmed),function(i) population-confirmed[i])
+  }
+  
+  #Computing infecte + infected in adjascent districts
+  adjProbableInfected <- ConfirmedInfected
+  adjConfirmedInfected <- ProbableInfected
+  for(district in unique(data$District)) {
+    district.index <- which(data$District==district)
+    adjRow <- which(rownames(adjmat)==district)
+    adjascent <- names(adjmat)[which(adjmat[adjRow,]==1)]
+    #cat(district,adjascent,"\n")
+    for(neighbor in adjascent) {
+      neighbour.index <- which(data$District==neighbour)
+      sameCountry <- data$Country[district.index[1]]==data$Country[neighbour.index[1]]
+      adjProbableInfected[district.index] <-  adjProbableInfected[district.index] + ProbableInfected[neighbour.index]*(districtWeight+sameCountry*(countryWeight-districtWeight))
+      adjConfirmedInfected[district.index] <-  adjConfirmedInfected[district.index] + ConfirmedInfected[neighbour.index]*(districtWeight+sameCountry*(countryWeight-districtWeight))
+    }
+  }
+  
+  # Computing FOI
+  ProbableFOI <- numeric(nrow(data))
+  ConfirmedFOI <- numeric(nrow(data))
+  for(district in unique(data$District)) {
+    district.index <- which(data$District==district)
+    population <- popdat[which(popdat[,1]==district),3]
+    ProbableFOI[district.index] <- ProbableSusceptible[district.index]*adjProbableInfected[district.index]/population
+    ConfirmedFOI[district.index] <- ConfirmedSusceptible[district.index]*adjConfirmedInfected[district.index]/population
+  }
+  
+  return(cbind(ProbableFOI=ProbableFOI,ConfirmedFOI=ConfirmedFOI))
+
+#Sanity Check
+# for(district in unique(data$District)) {
+#   district.index <- which(data$District==district)
+#   foi <- ProbableFOI[district.index]
+#   probable <- data$Probable[district.index]
+#   par(mfrow=c(2,1),mar=rep(4,4))
+#   plot(log(foi+1),type="l",main=district)
+#   plot(probable,type="l")
+# }
+}
+
+
+
